@@ -1,48 +1,60 @@
 /* 首頁幾何拼磚：依容器寬度計算欄數與格高（基礎格永遠為正方形），
  * 大圖塊以整數格合併，少量圖塊定期翻轉。文字與入口都是可操作的 HTML。 */
 (function () {
-  const D = '#07533e', G = '#087a4d', L = '#2e9e4f', M = '#9fcd45', P = '#e6f1d6', C = '#fbfaf3', Y = '#f6d62e', R = '#e5484d';
+  /* 配色取自參考圖「最新首頁方向」 */
+  const D = '#045c36', G = '#0b7a3d', L = '#2ea64f', M = '#7cbf2c', M2 = '#94c83a', P = '#e0eed3', C = '#f8fbf2', Y = '#fbca25', R = '#de3f3a', PK = '#ffc8b8';
 
-  /* ---------- 單格圖案（viewBox 0 0 100 100） ---------- */
-  const sproutPath = (x, y, s, stem, a, b) =>
-    `<g transform="translate(${x} ${y}) scale(${s})"><path d="M0 0V-30" stroke="${stem}" stroke-width="5" stroke-linecap="round"/><path d="M0-20C-14-20-25-30-25-44C-11-44 0-35 0-20Z" fill="${a}"/><path d="M0-25C0-41 12-51 28-51C26-35 15-26 0-25Z" fill="${b}"/></g>`;
-  const stalk = (x) =>
-    `<path d="M${x} 96V22" stroke="${L}" stroke-width="3"/>` +
-    [30, 44, 58, 72].map((y, i) => `<ellipse cx="${x + (i % 2 ? 7 : -7)}" cy="${y}" rx="7" ry="3.4" transform="rotate(${i % 2 ? -35 : 35} ${x + (i % 2 ? 7 : -7)} ${y})" fill="${L}"/><ellipse cx="${x + (i % 2 ? -7 : 7)}" cy="${y + 5}" rx="7" ry="3.4" transform="rotate(${i % 2 ? 35 : -35} ${x + (i % 2 ? -7 : 7)} ${y + 5})" fill="${L}"/>`).join('') +
-    `<ellipse cx="${x}" cy="18" rx="3.6" ry="7" fill="${L}"/>`;
-  const scallops = (y, color) => Array.from({ length: 5 }, (_, i) => `<path d="M${i * 25 - 12.5} ${y}a12.5 12.5 0 0 1 25 0z" fill="${color}"/>`).join('');
+  /* ---------- 單格圖案（viewBox 0 0 100 100），逐格依參考圖繪製 ---------- */
+  // 田野：綠色山坡＋白色弧線（cx、cy 為弧線圓心，rs 為半徑）
+  const fields = (top, cx, cy, rs, color) =>
+    `<clipPath id="f${top}${cx}${cy}"><path d="${top}"/></clipPath><path d="${top}" fill="${color}"/><g clip-path="url(#f${top}${cx}${cy})" fill="none" stroke="${C}" stroke-width="5">${rs.map((r) => `<circle cx="${cx}" cy="${cy}" r="${r}"/>`).join('')}</g>`;
+  // 拱形波紋：每列一串半圓弧（線條）
+  const arches = (ys, period, color, width, bg) =>
+    `<rect width="100" height="100" fill="${bg}"/><g fill="none" stroke="${color}" stroke-width="${width}">${ys.map((y) => `<path d="M${-period / 2} ${y}${Array.from({ length: Math.ceil(100 / period) + 2 }, () => `a${period / 2} ${period * .42} 0 0 1 ${period} 0`).join('')}"/>`).join('')}</g>`;
+  // 半月形小葉（基點 x,y，朝左或右）
+  const budL = (x, y, w, h, c) => `<path d="M${x} ${y}C${x - w * .45} ${y + h * .08} ${x - w} ${y - h * .3} ${x - w} ${y - h}C${x - w * .4} ${y - h * 1.02} ${x - w * .02} ${y - h * .6} ${x} ${y}Z" fill="${c}"/>`;
+  const budR = (x, y, w, h, c) => `<path d="M${x} ${y}C${x + w * .02} ${y - h * .6} ${x + w * .4} ${y - h * 1.02} ${x + w} ${y - h}C${x + w} ${y - h * .3} ${x + w * .45} ${y + h * .08} ${x} ${y}Z" fill="${c}"/>`;
+  const oval = (cx, cy, rx, ry, rot, c) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" transform="rotate(${rot} ${cx} ${cy})" fill="${c}"/>`;
+  // 尖葉：基點 x,y，長 len、寬 w、角度 deg（0 為向右，負值往上）
+  const leaf = (x, y, len, w, deg, c) => `<path d="M0 0C${len * .3} ${-w} ${len * .72} ${-w * .8} ${len} 0C${len * .72} ${w * .8} ${len * .3} ${w} 0 0Z" transform="translate(${x} ${y}) rotate(${deg})" fill="${c}"/>`;
+  const wheat = (x) => `<path d="M${x} 100V26" stroke="#5fae4c" stroke-width="1.6"/>` + oval(x, 22, 5.4, 10, 0, '#6cb939') +
+    [46, 62, 78].map((y) => leaf(x, y, 18, 5.8, -136, '#4fa84a') + leaf(x, y, 18, 5.8, -44, '#6cb939')).join('');
 
   const PATTERNS = [
-    // 0 嫩芽與土丘
-    `<rect width="100" height="100" fill="${D}"/><path d="M0 100V80q12-15 25-5q12-17 25 0q13-17 25 0q13-12 25 5V100Z" fill="${C}"/>${sproutPath(50, 78, .9, M, L, M)}`,
+    // 0 深綠底嫩芽與白雲
+    `<rect width="100" height="100" fill="${D}"/><rect x="47.6" y="48" width="3.6" height="40" fill="${C}"/>${budL(49, 60, 34, 27, M)}${budR(50, 52, 37, 37, M2)}<g fill="${C}"><circle cx="15" cy="102" r="18"/><circle cx="50" cy="100" r="19"/><circle cx="85" cy="102" r="18"/><rect y="94" width="100" height="6"/></g>`,
     // 1 三株麥穗
-    `<rect width="100" height="100" fill="${C}"/>${stalk(26)}${stalk(50)}${stalk(74)}`,
-    // 2 朝陽與田埂
-    `<rect width="100" height="100" fill="${C}"/><circle cx="50" cy="46" r="24" fill="${Y}"/><path d="M0 100V62Q50 26 100 62V100Z" fill="${L}"/><g fill="none" stroke="${C}" stroke-width="5"><path d="M-6 80Q50 44 106 80"/><path d="M-6 98Q50 62 106 98"/></g>`,
-    // 3 大葉片
-    `<rect width="100" height="100" fill="${C}"/><path d="M6 96C6 40 40 6 96 6C96 62 62 96 6 96Z" fill="${L}"/><g stroke="${C}" stroke-width="3" fill="none"><path d="M8 94L92 10"/><path d="M28 74L24 52M44 58L40 34M60 42L58 22M28 74L50 78M44 58L68 62M60 42L80 46"/></g>`,
-    // 4 波浪
-    `<rect width="100" height="100" fill="${D}"/>${scallops(30, C)}${scallops(62, C)}${scallops(94, C)}`,
-    // 5 雙苗土丘
-    `<rect width="100" height="100" fill="${P}"/><path d="M-5 100Q25 62 52 100ZM44 100Q72 66 106 100Z" fill="${D}"/>${sproutPath(25, 84, .7, L, L, L)}${sproutPath(73, 86, .7, L, L, L)}`,
-    // 6 雙葉
-    `<rect width="100" height="100" fill="${C}"/><path d="M48 92C18 92 6 66 10 40C34 38 50 60 48 92Z" fill="${D}"/><path d="M52 88C52 52 70 26 94 18C98 52 82 82 52 88Z" fill="${L}"/>`,
-    // 7 四葉
-    `<rect width="100" height="100" fill="${C}"/><g transform="translate(50 50)"><path d="M0 0C-4-22-22-34-40-30-36-12-22 2 0 0Z" fill="${L}"/><path d="M0 0C22-4 34-22 30-40 12-36-2-22 0 0Z" fill="${M}"/><path d="M0 0C4 22 22 34 40 30 36 12 22-2 0 0Z" fill="${L}"/><path d="M0 0C-22 4-34 22-30 40-12 36 2 22 0 0Z" fill="${M}"/></g>`,
-    // 8 田畦條紋
-    `<rect width="100" height="100" fill="${G}"/><g fill="none" stroke="${C}" stroke-width="6"><path d="M-10 40Q50 0 110 40"/><path d="M-10 64Q50 24 110 64"/><path d="M-10 88Q50 48 110 88"/></g>`,
-    // 9 日出田野
-    `<rect width="100" height="100" fill="${P}"/><circle cx="72" cy="30" r="16" fill="${Y}"/><path d="M0 100V58Q40 40 100 66V100Z" fill="${M}"/><path d="M0 100V76Q50 56 100 84V100Z" fill="${L}"/>`,
-    // 10 嫩綠單苗
-    `<rect width="100" height="100" fill="${M}"/>${sproutPath(50, 86, 1.1, D, D, G)}`,
-    // 11 黃色斜紋
-    `<rect width="100" height="100" fill="${Y}"/><g stroke="${C}" stroke-width="4"><path d="M-10 30L30-10M-10 60L60-10M-10 90L90-10M10 110L110 10M40 110L110 40M70 110L110 70"/></g>`,
-    // 12 綠色拱形波紋
-    `<rect width="100" height="100" fill="${C}"/><g fill="none" stroke="${L}" stroke-width="8" stroke-linecap="round">${[26, 54, 82].map((y) => `<path d="M-12 ${y}${Array.from({ length: 5 }, () => 'q12.5-17 25 0').join('')}"/>`).join('')}</g>`,
-    // 13 葉片植株
-    `<rect width="100" height="100" fill="${C}"/><path d="M50 98V20" stroke="${G}" stroke-width="3.5"/>${[[34, 1], [52, .9], [70, .8]].map(([y, k]) => `<path d="M49 ${y + 14}C40 ${y + 16} 24 ${y + 6} 22 ${y - 6}C36 ${y - 8} 46 ${y} 49 ${y + 14}Z" fill="${L}" transform="scale(1)"/><path d="M51 ${y + 14}C60 ${y + 16} 76 ${y + 6} 78 ${y - 6}C64 ${y - 8} 54 ${y} 51 ${y + 14}Z" fill="${G}"/>`).join('')}<path d="M50 30C42 24 42 12 50 4C58 12 58 24 50 30Z" fill="${L}"/>`,
+    `<rect width="100" height="100" fill="${C}"/>${wheat(20)}${wheat(50)}${wheat(80)}`,
+    // 2 朝陽與田野
+    `<rect width="100" height="100" fill="${C}"/><circle cx="52" cy="50" r="30" fill="${Y}"/>${fields('M0 100V50Q50 44 100 56V100Z', 30, 190, [140, 125, 110, 95], '#1f9a4a')}`,
+    // 3 嫩綠與深綠雙葉（杯形）
+    `<rect width="100" height="100" fill="${C}"/><path d="M50 90C22 90 8 66 8 26C34 24 50 46 50 90Z" fill="#6cb939"/><path d="M50 90C50 50 66 26 94 26C94 66 78 90 50 90Z" fill="${D}"/>`,
+    // 4 綠色拱形波紋
+    arches([30, 62, 94], 50, L, 8.5, C),
+    // 5 大葉與葉脈
+    `<rect width="100" height="100" fill="${C}"/><path d="M0 12C44 8 86 28 96 62C100 78 98 92 94 100H34C20 94 6 80 0 60Z" fill="#4aa83c"/><g stroke="${C}" stroke-width="3.2" fill="none"><path d="M0 12L94 100"/><path d="M30 10V40M48 14V57M66 22V74M0 38H28M0 56H47M6 75H67"/></g>`,
+    // 6 深綠底白色拱紋
+    arches([28, 60, 92], 33.4, C, 6.5, G),
+    // 7 淺綠底雙苗與土丘
+    `<rect width="100" height="100" fill="${P}"/><ellipse cx="25" cy="100" rx="27" ry="30" fill="${G}"/><ellipse cx="74" cy="100" rx="27" ry="30" fill="${G}"/><rect x="26.6" y="34" width="2.8" height="40" fill="${G}"/><rect x="71.6" y="34" width="2.8" height="40" fill="${G}"/>${budL(28, 36, 20, 15, G)}${budR(28, 36, 20, 15, G)}${budL(73, 36, 20, 15, G)}${budR(73, 36, 20, 15, G)}`,
+    // 8 深綠小葉與綠色高葉
+    `<rect width="100" height="100" fill="${C}"/><path d="M50 92C26 92 12 74 12 36C36 36 50 54 50 92Z" fill="${D}"/><path d="M50 92C50 40 64 6 96 6C96 58 80 90 50 92Z" fill="#31a856"/>`,
+    // 9 右上朝陽與田野
+    `<rect width="100" height="100" fill="${C}"/><circle cx="62" cy="32" r="28" fill="${Y}"/>${fields('M0 100V48Q50 38 100 44V100Z', 72, 172, [124, 108, 92, 76], '#1f9a4a')}`,
+    // 10 葉片植株
+    `<rect width="100" height="100" fill="${C}"/><path d="M50 100V16" stroke="#b7d99c" stroke-width="1.6"/>${leaf(50, 34, 28, 8.5, -90, '#3fa548')}${[44, 64, 84].map((y, i) => leaf(50, y, 33, 10.5, -158, '#2e9a43') + leaf(50, y, 33, 10.5, -22, i === 1 ? '#6cbc2c' : '#46a93f')).join('')}`,
+    // 11 四葉
+    `<rect width="100" height="100" fill="${C}"/><path d="M48 47C44 24 26 14 6 16C8 38 26 50 48 47Z" fill="${M}"/><path d="M52 47C56 24 74 14 94 16C92 38 74 50 52 47Z" fill="${G}"/><path d="M48 53C44 76 26 86 6 84C8 62 26 50 48 53Z" fill="${G}"/><path d="M52 53C56 76 74 86 94 84C92 62 74 50 52 53Z" fill="${M}"/>`,
+    // 12 大弧田畦
+    `<rect width="100" height="100" fill="${C}"/><circle cx="-4" cy="132" r="128" fill="#1d9548"/><g fill="none" stroke="${C}" stroke-width="7"><circle cx="-4" cy="132" r="104"/><circle cx="-4" cy="132" r="78"/></g>`,
+    // 13 大朝陽與山坡
+    `<rect width="100" height="100" fill="${C}"/><circle cx="50" cy="42" r="32" fill="${Y}"/>${fields('M0 100V58Q50 50 100 54V100Z', 84, 178, [126, 111, 96, 81], '#1f9a4a')}<path d="M0 60Q26 56 44 64Q22 72 0 84Z" fill="#6cb939"/>`,
     // 14 三株嫩芽與土丘
-    `<rect width="100" height="100" fill="${C}"/><path d="M-6 100Q10 76 28 100ZM26 100Q50 72 74 100ZM72 100Q90 76 106 100Z" fill="${D}"/>${sproutPath(14, 90, .5, M, M, L)}${sproutPath(50, 86, .55, M, M, L)}${sproutPath(86, 90, .5, M, M, L)}`,
+    `<rect width="100" height="100" fill="${C}"/>${[17, 50, 83].map((x) => `<ellipse cx="${x}" cy="102" rx="18" ry="26" fill="${G}"/><rect x="${x - 1.4}" y="30" width="2.8" height="48" fill="${M}"/>${budL(x, 34, 15, 13, M2)}${budR(x, 34, 15, 13, M)}`).join('')}`,
+    // 15 斜向大葉與葉脈
+    `<rect width="100" height="100" fill="${C}"/><path d="M8 100C2 66 10 38 32 20C52 6 78 4 96 4C100 34 96 72 84 100Z" fill="#1e9a47"/><g stroke="${C}" stroke-width="3.2" fill="none"><path d="M26 100L96 6"/><path d="M30 94V30M44 76V16M58 57V8M72 38V5M44 76H94M58 57H98M72 38H98M84 22H98"/></g>`,
+    // 16 淺綠底嫩芽與土丘
+    `<rect width="100" height="100" fill="${P}"/><ellipse cx="24" cy="104" rx="31" ry="28" fill="${G}"/><ellipse cx="78" cy="104" rx="31" ry="28" fill="${G}"/><rect x="48.6" y="44" width="3" height="56" fill="${D}"/>${budL(50, 60, 32, 34, '#6cb939')}${budR(50, 54, 36, 38, '#0b6a38')}`,
   ];
 
   /* ---------- 大圖塊 ---------- */
@@ -54,12 +66,12 @@
   /* 玉米：依參考圖，子彈形玉米穗、3 欄方格玉米粒、兩片大葉交疊成 V 字。
    * 圖形畫在 100×264 的座標內，依圖塊高度等比縮放置中，不拉伸。 */
   const corn = (h) => {
-    const H = 100 * h, k = Math.min(1, H / 264), ox = (100 - 100 * k) / 2, oy = (H - 264 * k) / 2;
+    const H = 100 * h, k = Math.min(1, H / 264), ox = (100 - 100 * k) / 2, oy = H >= 264 ? -8 : (H - 264 * k) / 2, ky = H >= 264 ? (H + 8) / 262 : k;
     const cob = 'M27 104C27 52 38 22 50 22C62 22 73 52 73 104V186Q73 204 50 204Q27 204 27 186Z';
     let kernels = '';
     for (let r = 0; r < 13; r++) for (let c = 0; c < 3; c++) kernels += `<rect x="${28.6 + c * 14.6}" y="${23 + r * 15.4}" width="13" height="13.6" rx="3" fill="#f5c62a"/>`;
     return `<svg viewBox="0 0 100 ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="${H}" fill="${D}"/>` +
-      `<g transform="translate(${ox} ${oy}) scale(${k})"><clipPath id="corn-cob-${h}"><path d="${cob}"/></clipPath>` +
+      `<g transform="translate(${ox} ${oy}) scale(${k} ${ky})"><clipPath id="corn-cob-${h}"><path d="${cob}"/></clipPath>` +
       `<path d="${cob}" fill="#0a4a31"/><g clip-path="url(#corn-cob-${h})">${kernels}</g>` +
       `<path d="M51 258Q12 204 8 98Q36 128 57 180Z" fill="#6cc24a"/>` +
       `<path d="M51 258Q28 214 20 150Q40 166 55 196Z" fill="#5db642"/>` +
@@ -67,44 +79,56 @@
       `<path d="M49 258Q72 214 80 150Q60 166 45 196Z" fill="#4aab43"/>` +
       `</g></svg>`;
   };
+  // 荔枝表皮的小白點
+  const dots = (cx, cy, r) => {
+    let d = '';
+    let row = 0;
+    for (let y = -r + 10; y < r - 4; y += 11, row++) for (let x = -r + 8 + (row % 2 ? 5.5 : 0); x < r - 4; x += 11) if (x * x + y * y < (r - 7) * (r - 7)) d += `M${cx + x - 3.4} ${cy + y}a3.4 3.4 0 0 1 6.8 0z`;
+    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${R}"/><path d="${d}" fill="${PK}"/>`;
+  };
   const FEATURES = {
-    pineapple: { w: 1, h: 2, label: '鳳梨', svg: `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${C}"/><clipPath id="pine-body"><rect x="0" y="100" width="100" height="100"/></clipPath><rect x="0" y="100" width="100" height="100" fill="${Y}"/><g clip-path="url(#pine-body)">${lattice(0, 100, 100, 100, 20, '#ffffff')}</g>` +
-      `<path d="M50 104L2 34L36 66Z" fill="${L}"/><path d="M50 104L98 34L64 66Z" fill="${L}"/><path d="M50 104L16 14L44 58Z" fill="${G}"/><path d="M50 104L84 14L56 58Z" fill="${G}"/><path d="M50 104L38 40L50 4L62 40Z" fill="${L}"/><path d="M50 104L6 76L30 80Z" fill="${M}"/><path d="M50 104L94 76L70 80Z" fill="${M}"/></svg>` },
+    pineapple: { w: 1, h: 2, label: '鳳梨', svg: `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${C}"/><clipPath id="pine-body"><path d="M0 116Q0 100 16 100H84Q100 100 100 116V200H0Z"/></clipPath><path d="M0 116Q0 100 16 100H84Q100 100 100 116V200H0Z" fill="#ffc525"/><g clip-path="url(#pine-body)">${lattice(0, 100, 100, 100, 24, C)}</g>` +
+      `<path d="M0 54L52 102H12Z" fill="${G}"/><path d="M100 54L48 102H88Z" fill="${G}"/><path d="M14 24L58 102H26Z" fill="#4fae3a"/><path d="M86 24L42 102H74Z" fill="${L}"/><path d="M50 4L29 102H50Z" fill="#4fa938"/><path d="M50 4L71 102H50Z" fill="#076739"/></svg>` },
     corn: { w: 1, h: 2, label: '玉米', svg: corn(2), svg3: corn(3) },
-    lychee: { w: 2, h: 2, label: '荔枝', svg: (() => {
-      const fruit = (cx, cy, r) => {
-        let bumps = '';
-        for (let y = -r + 8; y < r; y += 11) for (let x = -r + 8; x < r; x += 12) if (x * x + y * y < (r - 5) * (r - 5)) bumps += `<path d="M${cx + x - 4} ${cy + y + 2}a4 4 0 0 1 8 0" stroke="#ffffffaa" stroke-width="2" fill="none"/>`;
-        return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${R}"/>${bumps}`;
-      };
-      return `<svg viewBox="0 0 200 200" aria-hidden="true"><rect width="200" height="200" fill="${C}"/><path d="M98 12C96 40 80 60 66 92M98 12C104 44 118 66 132 86M98 12C100 50 100 80 104 120" stroke="#6b3d1f" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M98 30C70 22 40 32 26 56C56 64 82 54 98 30Z" fill="${L}"/><path d="M104 34C128 18 164 20 182 42C156 58 124 56 104 34Z" fill="${G}"/>${fruit(64, 112, 34)}${fruit(132, 110, 34)}${fruit(80, 158, 32)}<circle cx="142" cy="160" r="30" fill="${R}"/><circle cx="142" cy="160" r="23" fill="#ffffff"/><ellipse cx="143" cy="161" rx="9" ry="12" fill="#6b3d1f"/></svg>`;
-    })() },
+    lychee: { w: 2, h: 2, label: '荔枝', svg: `<svg viewBox="0 0 200 200" aria-hidden="true"><rect width="200" height="200" fill="${C}"/>` +
+      `<path d="M78 0L104 62M84 14C110 26 140 40 150 62" stroke="#5a321a" stroke-width="4.5" fill="none" stroke-linecap="round"/>` +
+      `<path d="M10 70Q40 18 84 22Q60 56 10 70Z" fill="#066734"/><path d="M10 70Q50 50 84 22Q66 62 10 70Z" fill="#2da951"/>` +
+      `<path d="M108 38Q140 14 180 30Q150 50 108 38Z" fill="#2da951"/><path d="M108 38Q146 36 180 30Q150 52 108 38Z" fill="#066734"/>` +
+      `${dots(104, 92, 33)}${dots(168, 100, 31)}${dots(44, 150, 33)}${dots(104, 168, 30)}` +
+      `<circle cx="140" cy="132" r="31" fill="${R}"/><circle cx="137" cy="129" r="27" fill="#fcf7f1"/><ellipse cx="136" cy="124" rx="8" ry="12" transform="rotate(8 136 124)" fill="#5e341c"/></svg>` },
   };
 
   /* ---------- 版型：依欄數切換（每個項目：類型、欄、列、寬、高） ---------- */
   const LAYOUTS = {
-    // 桌面版依參考圖「最新首頁方向」：8 欄 5 列，空白格的圖案也照參考圖排列
+    // 依參考圖「最新首頁方向」：桌面 8 欄 5 列；平板與手機沿用同一組圖案，tiles 固定每格圖案
     8: { rows: 5, items: [
       ['entry', 2, 0, 1, 1, 0], ['feature', 4, 0, 1, 2, 'pineapple'], ['entry', 6, 0, 1, 1, 1],
       ['feature', 5, 1, 1, 3, 'corn'], ['copy', 0, 2, 3, 2], ['feature', 3, 2, 2, 2, 'lychee'],
       ['entry', 7, 2, 1, 2, 2], ['entry', 3, 4, 1, 1, 3],
     ], tiles: [
-      [0, 1, -1, 2, -1, 6, -1, 12],
-      [3, 4, 5, 6, -1, -1, 2, 13],
+      [0, 1, -1, 2, -1, 3, -1, 4],
+      [5, 6, 7, 8, -1, -1, 9, 10],
+      [-1, -1, -1, -1, -1, -1, 11, -1],
       [-1, -1, -1, -1, -1, -1, 7, -1],
-      [-1, -1, -1, -1, -1, -1, 10, -1],
-      [8, 4, 2, -1, 14, 3, 4, 5],
+      [12, 6, 13, -1, 14, 15, 6, 16],
     ] },
     7: { rows: 6, items: [
       ['entry', 1, 0, 1, 1, 0], ['feature', 3, 0, 1, 2, 'pineapple'], ['entry', 5, 0, 1, 1, 1],
       ['feature', 5, 1, 1, 2, 'corn'], ['copy', 0, 2, 4, 3], ['feature', 4, 3, 2, 2, 'lychee'],
       ['entry', 6, 2, 1, 1, 2], ['entry', 2, 5, 1, 1, 3],
+    ], tiles: [
+      [0, -1, 1, -1, 3, -1, 4],
+      [5, 6, 7, -1, 8, -1, 10],
+      [-1, -1, -1, -1, 2, -1, -1],
+      [-1, -1, -1, -1, -1, -1, 11],
+      [-1, -1, -1, -1, -1, -1, 9],
+      [12, 13, -1, 14, 15, 6, 16],
     ] },
     4: { rows: 7, items: [
       ['entry', 0, 0, 1, 1, 0], ['entry', 2, 0, 1, 1, 1], ['copy', 0, 1, 4, 3],
       ['feature', 0, 4, 2, 2, 'lychee'], ['feature', 2, 4, 1, 2, 'pineapple'], ['feature', 3, 4, 1, 2, 'corn'],
       ['entry', 0, 6, 1, 1, 2], ['entry', 2, 6, 1, 1, 3],
-    ] },
+    ], tiles: [[-1, 1, -1, 4], [], [], [], [], [], [-1, 11, -1, 13]] },
   };
 
   const ENTRIES = [
@@ -162,7 +186,7 @@
         if (c !== (x > 0 ? pick[y][x - 1] : -1) && c !== (y > 0 ? pick[y - 1][x] : -1) && c !== (x > 0 && y > 0 ? pick[y - 1][x - 1] : -1)) { a = c; break; }
       }
       pick[y][x] = a;
-      const b = (a + 5 + (n % 4)) % PATTERNS.length;
+      const b = a; // 翻面仍是同一圖案，畫面維持參考圖構圖
       n++;
       out.push(`<div class="tile" style="grid-column:${x + 1};grid-row:${y + 1}" aria-hidden="true"><div class="tile-inner"><div class="face"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">${PATTERNS[a]}</svg></div><div class="face back"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">${PATTERNS[b]}</svg></div></div></div>`);
     }

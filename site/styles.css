@@ -137,7 +137,7 @@ header.site-header { position: sticky; top: 0; z-index: 40; height: var(--header
 .entry {
   display: flex; flex-direction: column; justify-content: space-between;
   padding: calc(var(--cell) * .12);
-  background: var(--ink); color: var(--white);
+  background: #045c36; color: var(--white);
   font-weight: 900; transition: background-color .2s;
 }
 .entry .num { display: block; font-size: calc(var(--cell) * .24); line-height: 1; margin-bottom: calc(var(--cell) * .07); letter-spacing: .02em; }
