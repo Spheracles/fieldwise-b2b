@@ -12,10 +12,11 @@ window.SITE = {
   testContact: { email: 'test@example.com', phone: '09XX-XXX-XXX', line: 'LINE 測試帳號' },
   contact: { email: null, phone: null, lineUrl: null, hours: '週一至週五 09:00–18:00（暫定）' },
 
-  /** 預約表單送到 B2B 專用 Google 表單（題目與欄位代碼見 INQUIRY）；enabled 改成 false 只產生本機摘要 */
-  googleForm: {
-    enabled: false, // 2026-11-12 測試：Google 表單會靜默丟棄非表單頁送出的回覆（缺頁面 token），改用其他送出方式前先關閉
-    action: 'https://docs.google.com/forms/d/e/1FAIpQLSfsyj72h7iRJuRbjCZ0nq7LagC9QwpyjtALBuJUabzUx_2hPg/formResponse',
+  /** 預約初談送到 Google Apps Script（原始碼 apps-script/Code.gs），寫入試算表並寄 Email 通知。
+   * endpoint 填部署後的網頁應用程式網址（…/exec）；enabled 為 false 時只產生摘要讓訪客複製 */
+  inquiry: {
+    enabled: false,
+    endpoint: '',
   },
 
   officialLinks: [
@@ -28,9 +29,9 @@ window.SITE = {
 
 window.TOPICS = ['農友陪跑', '商品詢問', '產地體驗', '企業合作與贊助', '其他'];
 
-/* 預約初談題目：entry 為 Google 表單欄位代碼，options 必須和 Google 表單選項文字完全一致。
+/* 預約初談題目：key 對應 apps-script/Code.gs 的 COLUMNS（試算表欄位）。
  * group：all 所有人、b2b 通路與採購、farm 農友與產地夥伴、other 其他；other: true 代表有「其他」可自填。
- * 必填檢查由網站處理，Google 表單本身所有題目都不設必填（否則分流後沒顯示的題目會讓送出失敗）。 */
+ * entry 是同題目在 Google 表單（B2B 中盤商版）的欄位代碼，目前網站不送 Google 表單，保留供對照。 */
 window.INQUIRY = {
   identity: { entry: 1037193855, label: '你是哪一種身分', options: ['通路', '中盤商採購', '企業選物', '禮品採購', '零售門市', '餐飲烘焙', '農友', '產地夥伴'], other: true,
     groups: { 通路: 'b2b', 中盤商採購: 'b2b', 企業選物: 'b2b', 禮品採購: 'b2b', 零售門市: 'b2b', 餐飲烘焙: 'b2b', 農友: 'farm', 產地夥伴: 'farm', 其他: 'other' } },

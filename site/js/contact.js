@@ -1,9 +1,9 @@
 /* 預約初談表單：先選身分，再依身分顯示「採購需求」「農場與想聊的事」或「想聊的事」。
- * 題目、選項與 Google 表單欄位代碼都在 data.js 的 INQUIRY；必填檢查由網站處理。
- * 流程：整理摘要 → 確認送出（Google 表單，no-cors）→ 成功畫面。 */
+ * 題目與選項在 data.js 的 INQUIRY；必填檢查由網站處理，Apps Script 再檢查一次。
+ * 流程：整理摘要 → 確認送出（Apps Script 寫入試算表並回傳結果）→ 成功畫面。 */
 (function () {
   const wrap = $('#contact-form-wrap');
-  const live = SITE.googleForm && SITE.googleForm.enabled;
+  const live = !!(SITE.inquiry && SITE.inquiry.enabled && SITE.inquiry.endpoint);
   const Q = INQUIRY;
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const req = '　<span class="req">必填</span>';
@@ -49,7 +49,7 @@
         <li>蒐集者：田序共創（公司名稱建置中）。</li>
         <li>目的：回覆你的詢問、提供報價與樣品、安排初談與後續聯繫。</li>
         <li>類別：稱呼、職稱、公司或農場名稱、統一編號、聯絡方式與你填寫的需求內容。</li>
-        <li>儲存：資料透過 Google 表單送出並儲存於 Google 雲端服務（Google LLC），伺服器可能位於臺灣以外地區，僅團隊授權人員可以查看。</li>
+        <li>儲存：資料儲存於 Google 試算表（Google LLC 雲端服務），伺服器可能位於臺灣以外地區，僅團隊授權人員可以查看。</li>
         <li>權利：你可以依個人資料保護法第 3 條請求查詢、閱覽、製給複製本、補充或更正、停止蒐集處理利用或刪除。</li>
         <li>不提供必填資料時，我們將無法回覆你的詢問。</li>
       </ul><p style="margin-top:8px">正式上線前將由律師審閱，完整說明見<a href="#privacy" style="text-decoration:underline">隱私權政策</a>。</p></details>
@@ -151,35 +151,20 @@
     catch (err) { $('#feedback').textContent = '瀏覽器未允許自動複製　請選取上方摘要文字手動複製'; }
   };
 
-  /* ---------- 送出到 Google 表單 ---------- */
-  // 有「其他」的題目：選了其他就送 __other_option__ 與自填文字
-  function appendChoice(body, entry, values, key) {
-    values.forEach((v) => {
-      if (v === '其他') {
-        body.append(`entry.${entry}`, '__other_option__');
-        body.append(`entry.${entry}.other_option_response`, otherText(key) || '其他');
-      } else body.append(`entry.${entry}`, v);
-    });
+  /* ---------- 送出資料 ---------- */
+  function buildPayload() {
+    const now = new Date(), pad = (n) => String(n).padStart(2, '0');
+    const data = {
+      identity: identity() === '其他' && otherText('identity') ? `其他（${otherText('identity')}）` : identity(),
+      item: $('#item').value,
+      consentAt: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`,
+      page: location.origin + location.pathname,
+      website: $('#website').value,
+    };
+    allFields.filter(visible).forEach((f) => { const v = display(f); if (v) data[f.key] = v; });
+    return data;
   }
-  function buildBody() {
-    const body = new URLSearchParams();
-    appendChoice(body, Q.identity.entry, checked('identity'), 'identity');
-    allFields.filter(visible).forEach((f) => {
-      if (f.type === 'chips') { const v = checked(f.key).join('、'); if (v) body.append(`entry.${f.entry}`, v); }
-      else if (isChip(f)) appendChoice(body, f.entry, checked(f.key), f.key);
-      else { const v = $(`#f-${f.key}`).value.trim(); if (v) body.append(`entry.${f.entry}`, v); }
-    });
-    if ($('#item').value) body.append(`entry.${Q.item.entry}`, $('#item').value);
-    body.append(`entry.${Q.consent.entry}`, Q.consent.value);
-    // Google 表單現在會拒收缺少 fbzx／partialResponse 的回覆（HTTP 400），由網站產生一組隨機值
-    const fbzx = '-' + String(Math.floor(Math.random() * 9e17) + 1e17);
-    body.append('fvv', '1');
-    body.append('pageHistory', '0');
-    body.append('fbzx', fbzx);
-    body.append('partialResponse', `[null,null,"${fbzx}"]`);
-    return body;
-  }
-  window.buildInquiryBody = () => buildBody().toString(); // 測試用
+  window.buildInquiryPayload = buildPayload; // 測試用
 
   const LAST = 'fieldwise:lastSubmit';
   const recently = () => { try { return Date.now() - Number(sessionStorage.getItem(LAST) || 0) < 60000; } catch (e) { return false; } };
@@ -193,14 +178,17 @@
       const btn = $('#send');
       btn.disabled = true; btn.textContent = '送出中…';
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 15000);
+      const timer = setTimeout(() => ctrl.abort(), 20000);
       try {
-        await fetch(SITE.googleForm.action, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' }, body: buildBody().toString(), signal: ctrl.signal });
+        // text/plain 不會觸發預檢請求；Apps Script 回傳 JSON，可以確認是否真的寫入
+        const res = await fetch(SITE.inquiry.endpoint, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(buildPayload()), signal: ctrl.signal });
+        const out = await res.json();
+        if (!out.ok) throw new Error(out.error || 'rejected');
         try { sessionStorage.setItem(LAST, String(Date.now())); } catch (e) { /* ignore */ }
         showSuccess();
       } catch (err) {
         fb.className = 'feedback err';
-        fb.textContent = '送出時連線失敗，資料還沒有送到。請確認網路後再按一次「確認送出」，或先複製摘要。';
+        fb.textContent = '送出沒有成功，資料還沒有送到。請稍後再按一次「確認送出」，或先複製摘要傳給我們。';
         btn.disabled = false; btn.textContent = '確認送出 ↗';
       } finally {
         clearTimeout(timer);
