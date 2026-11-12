@@ -804,8 +804,9 @@ window.SITE = {
   /** 預約初談送到 Google Apps Script（原始碼 apps-script/Code.gs），寫入試算表並寄 Email 通知。
    * endpoint 填部署後的網頁應用程式網址（…/exec）；enabled 為 false 時只產生摘要讓訪客複製 */
   inquiry: {
-    enabled: false,
-    endpoint: '',
+    enabled: true,
+    // 試算表「田序共創 B2B 預約初談」的 Apps Script（網站預約初談 v1，2026-11-12 部署）
+    endpoint: 'https://script.google.com/macros/s/AKfycbw3JyYpERbzg49ns3qc7bHdPwVKXxk5Z34M1EsssNFVYidafLbt5bgmuqyySJPIk65M/exec',
   },
 
   officialLinks: [
