@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>田序共創｜把土地的美好帶進每一天</title>
+<meta name="description" content="田序共創 FIELDWISE 從高雄大樹出發，陪小農整理經營、推廣產地好物，連結產地體驗與企業合作。認識當季農產，發現產地故事。">
+<meta name="theme-color" content="#07533e">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="田序共創 FIELDWISE">
+<meta property="og:title" content="田序共創｜把土地的美好帶進每一天">
+<meta property="og:description" content="認識當季農產 發現產地故事。陪小農整理經營、推廣產地好物。">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a href="#main" class="skip">跳到主要內容</a>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="#top" data-home aria-label="田序共創 FIELDWISE 回到首頁"><span data-logo></span><span>田序共創<small>FIELDWISE</small></span></a>
+    <nav class="nav-links" aria-label="主要導覽">
+      <a href="#services">農友陪跑</a>
+      <a href="#plans">陪跑方案</a>
+      <a href="#products">產地好物</a>
+      <a href="#resources">資源專欄</a>
+      <a href="#about">關於我們</a>
+      <a href="#contact" class="btn solid small">預約初談 <span class="arrow">↗</span></a>
+    </nav>
+    <button class="btn solid menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav">選單 ☰</button>
+  </div>
+</header>
+<nav class="mobile-nav" id="mobile-nav" aria-label="手機版導覽"></nav>
+
+<main id="main">
+  <div id="home">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="mosaic" id="mosaic"></div>
+    </section>
+    <div class="hero-bar">
+      <div class="wrap">
+        <span>一塊田　一群人　一起慢慢做好</span>
+        <button class="btn small motion-toggle" type="button" id="motion-toggle" aria-pressed="false">暫停動畫 Ⅱ</button>
+      </div>
+    </div>
+    <div class="intro-strip">
+      <div class="wrap">
+        <p>你專心照顧土地<br class="m-br">其他的我們一起想辦法</p>
+        <a href="#services" class="btn solid small">看看能怎麼幫忙 ↓</a>
+      </div>
+    </div>
+
+    <section class="section wrap" id="services" aria-labelledby="services-title">
+      <div class="section-head">
+        <div><div class="eyebrow">給努力耕作的你</div><h2 id="services-title">從你最需要的地方開始</h2></div>
+        <p>不用先懂工具或寫好計畫<br>帶著現在的問題來聊就好</p>
+      </div>
+      <div class="services" id="services-list"></div>
+    </section>
+
+    <section class="section wrap" id="diagnosis" aria-labelledby="diagnosis-title">
+      <div class="section-head">
+        <div><div class="eyebrow">先從一個小問題開始</div><h2 id="diagnosis-title">現在最想改善什麼</h2></div>
+        <p>選出目前的狀況<br>看看可以從哪裡開始</p>
+      </div>
+      <fieldset style="border:0;padding:0;margin:0">
+        <legend>目前的狀況　可複選</legend>
+        <div class="chips" id="diagnosis-options"></div>
+      </fieldset>
+      <div style="margin-top:22px"><button class="btn solid" type="button" id="diagnose">看看建議方向 ↗</button></div>
+      <div id="diagnosis-result" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="section deep" id="about" aria-labelledby="about-title">
+      <div class="wrap">
+        <div class="story-grid">
+          <div>
+            <div class="story-art" id="story-art"></div>
+            <span class="art-label">農業共創情境插畫</span>
+          </div>
+          <div class="story-copy">
+            <div class="eyebrow">我們的故事</div>
+            <h2 id="about-title">好的農產背後<br>值得有一群同行的人</h2>
+            <p>我們結合產品財務、網站、設計、影音與行銷的力量，從高雄大樹開始，陪小農把產地故事說清楚，把經營一步步做好。</p>
+            <div class="tags"><span class="tag">農友的步調</span><span class="tag">團隊的專長</span><span class="tag">一起做的日常</span></div>
+            <div style="margin-top:26px"><a class="btn yellow" href="#process">認識我們的合作方式 ↗</a></div>
+          </div>
+        </div>
+        <div class="video-block" id="story-video"></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="support" aria-labelledby="support-title">
+      <div class="section-head">
+        <div><div class="eyebrow">把支持放進日常</div><h2 id="support-title">從一份好物認識產地</h2></div>
+        <p>選一份農產　走一趟產地<br>都是靠近小農的開始</p>
+      </div>
+      <div class="tabs" role="tablist" aria-label="支持方式" id="support-tabs">
+        <button class="btn" role="tab" id="tab-goods" data-mode="goods" aria-selected="true" aria-controls="support-content">產地好物</button>
+        <button class="btn" role="tab" id="tab-trip" data-mode="trip" aria-selected="false" aria-controls="support-content" tabindex="-1">走進產地</button>
+        <button class="btn" role="tab" id="tab-partner" data-mode="partner" aria-selected="false" aria-controls="support-content" tabindex="-1">企業與夥伴</button>
+      </div>
+      <div id="support-content" role="tabpanel" aria-labelledby="tab-goods" tabindex="0"></div>
+      <p class="note" style="margin-top:22px">目前為內容規劃示意　商品供應與體驗場次將於確認後公告</p>
+    </section>
+
+    <section class="section tint" id="products" aria-labelledby="products-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="eyebrow">產地好物</div><h2 id="products-title">從一顆鳳梨開始的好味道</h2></div>
+          <p>商品資訊　風味故事　使用情境<br>一起認識大樹鳳梨的各種樣子</p>
+        </div>
+        <div class="products-head">
+          <div class="chips" role="group" aria-label="商品分類" id="product-filters"></div>
+          <span class="note" id="product-count" aria-live="polite"></span>
+        </div>
+        <div class="product-grid" id="product-grid"></div>
+        <p class="products-note">商品為規劃與打樣評估中的品項　圖片為商品情境示意<br>建議測試售價取自試辦企畫書的試算區間　正式售價、規格與供應確認後公告</p>
+      </div>
+    </section>
+
+    <section class="section plans tint" id="plans" aria-labelledby="plans-title" style="background:#e7ebdc">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="eyebrow">不用一步到位</div><h2 id="plans-title">有方向也有陪伴的合作方案</h2></div>
+          <p>先認識你的農場<br>再一起找到適合的合作步調</p>
+        </div>
+        <div class="billing" role="group" aria-label="付款週期">
+          <button class="btn" type="button" data-billing="month" aria-pressed="true">月繳陪跑</button>
+          <button class="btn" type="button" data-billing="quarter" aria-pressed="false">季繳陪跑</button>
+        </div>
+        <div class="plan-grid" id="plan-grid"></div>
+        <p class="plan-note">陪跑方案試營運建議價格　價格未含營業稅　實際服務內容與費用以雙方確認的報價為準</p>
+        <details class="compare" id="compare"></details>
+        <div class="project-options">
+          <article class="project-option"><h3>單次經營診斷</h3><p>聚焦一個問題 盤點後提出建議</p><strong>專案報價</strong></article>
+          <article class="project-option"><h3>企畫申請專案</h3><p>依申請期程與文件範圍一起規劃</p><strong>專案報價</strong></article>
+          <article class="project-option"><h3>實地勘查</h3><p>到現場理解農地動線與工作需求</p><strong>依地點與工時報價</strong></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cases" aria-labelledby="cases-title">
+      <div class="wrap">
+        <div class="eyebrow">工作方法看得見</div>
+        <h2 id="cases-title">看看陪跑會怎麼進行</h2>
+        <p style="margin:20px 0 28px">以下為模擬情境　用來說明工作方法　不是真實客戶或既有成果</p>
+        <div class="grid-3" id="case-grid"></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="process" aria-labelledby="process-title">
+      <div class="eyebrow">把事情一點一點做好</div>
+      <h2 id="process-title">從聊聊到一起行動</h2>
+      <div class="process-story" id="process-story">
+        <div class="process-pin">
+          <div class="process-scene" id="flow-art"></div>
+          <div>
+            <div class="eyebrow">陪伴是一起把事情做完</div>
+            <div class="process-counter"><span id="flow-percent">0</span><small> %</small></div>
+            <div class="progress-track"><div class="progress-bar" id="flow-bar" role="progressbar" aria-label="合作流程進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div></div>
+            <h3 class="flow-title" id="flow-title"></h3>
+            <p class="flow-copy" id="flow-copy"></p>
+            <div class="deliverable">這一步會留下<br><span id="flow-output"></span></div>
+            <div class="flow-controls" id="flow-controls" aria-label="合作流程階段"></div>
+            <p class="process-hint">往下捲動看下一步　也可以直接選擇階段</p>
+          </div>
+        </div>
+      </div>
+      <div class="teamline">
+        <div>
+          <div class="eyebrow">來自不同專長的我們</div>
+          <h3>把每個人的力量用在產地</h3>
+          <p>團隊包含以下職務　實際合作分工依專案安排</p>
+        </div>
+        <div class="tags" style="align-content:center"><span class="tag">募資提案</span><span class="tag">產品與財務</span><span class="tag">網站製作</span><span class="tag">視覺設計</span><span class="tag">影音製作</span><span class="tag">內容行銷</span></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="workspace" aria-labelledby="workspace-title">
+      <div class="eyebrow">合作之後的日常</div>
+      <h2 id="workspace-title">一起看見目前的進度</h2>
+      <p style="margin:20px 0 28px">工作台規劃示意　以實際合作需求選擇工具</p>
+      <div class="grid-2" id="workspace-grid"></div>
+      <div class="partner-banner">
+        <div><h3>把不同的力量帶到產地</h3><p>企業選物　通路媒合　影音內容　資源合作</p><p class="note">合作夥伴取得同意後陸續介紹</p></div>
+        <a class="btn" href="#contact" data-topic="企業合作與贊助" data-note="我想聊聊企業合作或贊助">一起聊合作 ↗</a>
+      </div>
+    </section>
+
+    <section class="section tint" id="news" aria-labelledby="news-title">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="eyebrow">產地最新動態</div><h2 id="news-title">最新消息</h2></div>
+          <p>商品上架、體驗場次與合作公告<br>確認後會在這裡發布</p>
+        </div>
+        <div class="news-empty" id="news-empty"></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="resources" aria-labelledby="resources-title">
+      <div class="section-head">
+        <div><div class="eyebrow">今天就能開始的小整理</div><h2 id="resources-title">把經營知識帶回農場</h2></div>
+        <p>農業經營　數位工具　申請準備<br>依你需要的主題慢慢看</p>
+      </div>
+      <div class="chips" role="group" aria-label="專欄分類" id="resource-filters" style="margin-bottom:26px"></div>
+      <div class="grid-3" id="resource-grid"></div>
+      <p class="note" style="margin-top:22px">專欄為內容範例　正式發布前由團隊確認與審閱</p>
+      <details class="compare" id="official"></details>
+    </section>
+
+    <section class="section wrap" id="faq" aria-labelledby="faq-title">
+      <div class="section-head">
+        <div><div class="eyebrow">開始前想知道的事</div><h2 id="faq-title">有疑問我們慢慢說</h2></div>
+        <button class="btn" type="button" id="all-faq" aria-expanded="false">全部展開</button>
+      </div>
+      <div class="faq-list" id="faq-list"></div>
+    </section>
+
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-grid">
+        <div class="contact-copy">
+          <div class="eyebrow">一起種下新的可能</div>
+          <h2 id="contact-title">有想法就來聊聊</h2>
+          <p>想改善農場經營<br>想詢問商品或體驗<br>或想和我們一起支持小農</p>
+          <p>先把想法整理下來<br>不用一次說得很完整</p>
+          <div class="contact-info" id="contact-info"></div>
+          <div class="contact-art" id="contact-art"></div>
+        </div>
+        <div id="contact-form-wrap"></div>
+      </div>
+    </section>
+  </div>
+
+  <div id="view" hidden></div>
+</main>
+
+<footer class="site-footer" id="footer"></footer>
+
+<dialog id="detail" aria-labelledby="detail-title">
+  <button class="close" type="button" aria-label="關閉">×</button>
+  <div class="eyebrow" id="detail-kicker">先認識再出發</div>
+  <h2 id="detail-title"></h2>
+  <div class="dialog-body" id="detail-body"></div>
+  <div class="dialog-actions" id="detail-actions"></div>
+</dialog>
+<div class="toast-region" id="toasts" role="status" aria-live="polite"></div>
+
+<!--SCRIPTS-->
+<script src="js/data.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/mosaic.js"></script>
+<script src="js/app.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/views.js"></script>
+<!--/SCRIPTS-->
+</body>
+</html>
