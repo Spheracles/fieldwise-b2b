@@ -37,21 +37,34 @@
     `<rect width="100" height="100" fill="${M}"/>${sproutPath(50, 86, 1.1, D, D, G)}`,
     // 11 黃色斜紋
     `<rect width="100" height="100" fill="${Y}"/><g stroke="${C}" stroke-width="4"><path d="M-10 30L30-10M-10 60L60-10M-10 90L90-10M10 110L110 10M40 110L110 40M70 110L110 70"/></g>`,
+    // 12 綠色拱形波紋
+    `<rect width="100" height="100" fill="${C}"/><g fill="none" stroke="${L}" stroke-width="8" stroke-linecap="round">${[26, 54, 82].map((y) => `<path d="M-12 ${y}${Array.from({ length: 5 }, () => 'q12.5-17 25 0').join('')}"/>`).join('')}</g>`,
+    // 13 葉片植株
+    `<rect width="100" height="100" fill="${C}"/><path d="M50 98V20" stroke="${G}" stroke-width="3.5"/>${[[34, 1], [52, .9], [70, .8]].map(([y, k]) => `<path d="M49 ${y + 14}C40 ${y + 16} 24 ${y + 6} 22 ${y - 6}C36 ${y - 8} 46 ${y} 49 ${y + 14}Z" fill="${L}" transform="scale(1)"/><path d="M51 ${y + 14}C60 ${y + 16} 76 ${y + 6} 78 ${y - 6}C64 ${y - 8} 54 ${y} 51 ${y + 14}Z" fill="${G}"/>`).join('')}<path d="M50 30C42 24 42 12 50 4C58 12 58 24 50 30Z" fill="${L}"/>`,
+    // 14 三株嫩芽與土丘
+    `<rect width="100" height="100" fill="${C}"/><path d="M-6 100Q10 76 28 100ZM26 100Q50 72 74 100ZM72 100Q90 76 106 100Z" fill="${D}"/>${sproutPath(14, 90, .5, M, M, L)}${sproutPath(50, 86, .55, M, M, L)}${sproutPath(86, 90, .5, M, M, L)}`,
   ];
 
   /* ---------- 大圖塊 ---------- */
   const lattice = (x0, y0, w, h, step, color) => {
     let d = '';
     for (let k = -h; k < w + h; k += step) d += `M${x0 + k} ${y0}l${h} ${h}M${x0 + k + h} ${y0}l${-h} ${h}`;
-    return `<path d="${d}" stroke="${color}" stroke-width="3"/>`;
+    return `<path d="${d}" stroke="${color}" stroke-width="4"/>`;
+  };
+  const corn = (h) => {
+    const H = 100 * h, top = H * .08, cob = H * .7;
+    let kernels = '';
+    const rows = Math.floor((cob - 16) / 10.2);
+    for (let r = 0; r < rows; r++) for (let c = 0; c < 4; c++) kernels += `<rect x="${32.4 + c * 9}" y="${top + 9 + r * 10.2}" width="8" height="8.6" rx="2.6" fill="#fbe86a"/>`;
+    return `<svg viewBox="0 0 100 ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="${H}" fill="${D}"/><rect x="29" y="${top}" width="42" height="${cob}" rx="21" fill="${Y}"/>${kernels}` +
+      `<path d="M50 ${H - 4}C18 ${H * .86} 8 ${H * .6} 16 ${H * .4}C28 ${H * .54} 40 ${H * .7} 54 ${H * .84}Z" fill="${L}"/>` +
+      `<path d="M50 ${H - 4}C82 ${H * .86} 92 ${H * .6} 84 ${H * .4}C72 ${H * .54} 60 ${H * .7} 46 ${H * .84}Z" fill="${M}"/>` +
+      `<path d="M50 ${H - 4}C40 ${H * .9} 36 ${H * .78} 42 ${H * .64}C50 ${H * .74} 56 ${H * .86} 56 ${H - 4}Z" fill="${G}"/></svg>`;
   };
   const FEATURES = {
-    pineapple: { w: 1, h: 2, label: '鳳梨', svg: `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${C}"/><path d="M50 92L30 34L46 62L44 8L56 60L66 22L62 70L86 40L62 94Z" fill="${L}"/><path d="M50 92L18 58L40 76L50 30L58 78L80 60Z" fill="${G}"/><clipPath id="pine-body"><rect x="16" y="84" width="68" height="110" rx="32"/></clipPath><rect x="16" y="84" width="68" height="110" rx="32" fill="${Y}"/><g clip-path="url(#pine-body)">${lattice(16, 84, 68, 110, 17, '#ffffffcc')}</g></svg>` },
-    corn: { w: 1, h: 2, label: '玉米', svg: (() => {
-      let kernels = '';
-      for (let r = 0; r < 13; r++) for (let c = 0; c < 4; c++) kernels += `<rect x="${33 + c * 8.6}" y="${28 + r * 9.2}" width="7.4" height="8" rx="2.4" fill="#f9e35a"/>`;
-      return `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${D}"/><rect x="30" y="22" width="40" height="132" rx="20" fill="${Y}"/>${kernels}<path d="M50 196C20 170 14 120 26 84C30 118 38 150 52 170Z" fill="${L}"/><path d="M50 196C80 170 86 120 74 84C70 118 62 150 48 170Z" fill="${M}"/><path d="M50 196C40 176 38 160 44 140C48 160 52 176 56 196Z" fill="${G}"/></svg>`;
-    })() },
+    pineapple: { w: 1, h: 2, label: '鳳梨', svg: `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${C}"/><clipPath id="pine-body"><rect x="0" y="100" width="100" height="100"/></clipPath><rect x="0" y="100" width="100" height="100" fill="${Y}"/><g clip-path="url(#pine-body)">${lattice(0, 100, 100, 100, 20, '#ffffff')}</g>` +
+      `<path d="M50 104L2 34L36 66Z" fill="${L}"/><path d="M50 104L98 34L64 66Z" fill="${L}"/><path d="M50 104L16 14L44 58Z" fill="${G}"/><path d="M50 104L84 14L56 58Z" fill="${G}"/><path d="M50 104L38 40L50 4L62 40Z" fill="${L}"/><path d="M50 104L6 76L30 80Z" fill="${M}"/><path d="M50 104L94 76L70 80Z" fill="${M}"/></svg>` },
+    corn: { w: 1, h: 2, label: '玉米', svg: corn(2), svg3: corn(3) },
     lychee: { w: 2, h: 2, label: '荔枝', svg: (() => {
       const fruit = (cx, cy, r) => {
         let bumps = '';
@@ -64,10 +77,17 @@
 
   /* ---------- 版型：依欄數切換（每個項目：類型、欄、列、寬、高） ---------- */
   const LAYOUTS = {
-    10: { rows: 5, items: [
-      ['entry', 2, 0, 1, 1, 0], ['feature', 4, 0, 1, 2, 'pineapple'], ['entry', 7, 0, 1, 1, 1],
-      ['feature', 6, 1, 1, 3, 'corn'], ['copy', 0, 2, 4, 2], ['feature', 4, 2, 2, 2, 'lychee'],
-      ['entry', 8, 2, 1, 2, 2], ['entry', 4, 4, 1, 1, 3],
+    // 桌面版依參考圖「最新首頁方向」：8 欄 5 列，空白格的圖案也照參考圖排列
+    8: { rows: 5, items: [
+      ['entry', 2, 0, 1, 1, 0], ['feature', 4, 0, 1, 2, 'pineapple'], ['entry', 6, 0, 1, 1, 1],
+      ['feature', 5, 1, 1, 3, 'corn'], ['copy', 0, 2, 3, 2], ['feature', 3, 2, 2, 2, 'lychee'],
+      ['entry', 7, 2, 1, 2, 2], ['entry', 3, 4, 1, 1, 3],
+    ], tiles: [
+      [0, 1, -1, 2, -1, 6, -1, 12],
+      [3, 4, 5, 6, -1, -1, 2, 13],
+      [-1, -1, -1, -1, -1, -1, 7, -1],
+      [-1, -1, -1, -1, -1, -1, 10, -1],
+      [8, 4, 2, -1, 14, 3, 4, 5],
     ] },
     7: { rows: 6, items: [
       ['entry', 1, 0, 1, 1, 0], ['feature', 3, 0, 1, 2, 'pineapple'], ['entry', 5, 0, 1, 1, 1],
@@ -88,13 +108,13 @@
     ['04', '最新消息', '#news', 'news'],
   ];
 
-  const COPY_HTML = `<h1 id="hero-title">把土地的美好<br>帶進每一天</h1><p class="sub">認識當季農產　發現產地故事</p><div class="hero-actions"><a class="btn solid" href="#services">我是小農 <span class="arrow">↗</span></a><a class="btn yellow" href="#support">我要支持小農 <span class="arrow">↗</span></a></div>`;
+  const COPY_HTML = `<h1 id="hero-title">把土地的美好<br>帶進每一天</h1><p class="sub">認識當季農產　發現產地故事</p><div class="hero-actions"><a class="btn solid" href="#products" data-action="products-season">探索當季農產 <span class="arrow">↗</span></a></div>`;
 
   const grid = document.getElementById('mosaic');
   let current = '';
 
   function layoutFor(width) {
-    if (width >= 1200) return { base: 10, cols: Math.max(10, Math.round(width / 150)) };
+    if (width >= 1000) return { base: 8, cols: Math.max(8, Math.round(width / 200)) };
     if (width >= 760) return { base: 7, cols: 7 };
     return { base: 4, cols: 4 };
   }
@@ -118,7 +138,10 @@
       else if (type === 'entry') {
         const [num, label, href, action] = ENTRIES[extra];
         out.push(`<a class="entry" style="${pos}" href="${href}" data-action="${action}"><span><span class="num">${num}</span><span class="label">${label}</span></span><span class="go" aria-hidden="true">↗</span></a>`);
-      } else out.push(`<div class="feature" style="${pos}" role="img" aria-label="${FEATURES[extra].label}的幾何插圖">${FEATURES[extra].svg}</div>`);
+      } else {
+        const f = FEATURES[extra];
+        out.push(`<div class="feature" style="${pos}" role="img" aria-label="${f.label}的幾何插圖">${h === 3 && f.svg3 ? f.svg3 : f.svg}</div>`);
+      }
     });
     // 依序挑選圖案，避開左方與上方相同的圖案，讓拼磚分布更均勻
     const pick = Array.from({ length: L.rows }, () => Array(cols).fill(-1));
@@ -126,7 +149,9 @@
     for (let y = 0; y < L.rows; y++) for (let x = 0; x < cols; x++) {
       if (occupied[y][x]) continue;
       let a = (x * 7 + y * 5 + n * 3) % PATTERNS.length;
-      for (let k = 0; k < PATTERNS.length; k++) {
+      const fixed = L.tiles && L.tiles[y] && L.tiles[y][x];
+      if (fixed >= 0) a = fixed;
+      else for (let k = 0; k < PATTERNS.length; k++) {
         const c = (a + k) % PATTERNS.length;
         if (c !== (x > 0 ? pick[y][x - 1] : -1) && c !== (y > 0 ? pick[y - 1][x] : -1) && c !== (x > 0 && y > 0 ? pick[y - 1][x - 1] : -1)) { a = c; break; }
       }

@@ -99,15 +99,18 @@ small { font-size: 17px; font-weight: 800; }
 .arrow { font-weight: 900; }
 
 /* ---------- 頁首 ---------- */
-header.site-header { position: sticky; top: 0; z-index: 40; height: var(--header-h); background: var(--paper); border-bottom: 1px solid var(--line); }
+header.site-header { position: sticky; top: 0; z-index: 40; height: var(--header-h); background: var(--white); border-bottom: 1px solid #07533e1a; }
+.site-header .nav.wrap { width: 100%; padding-inline: clamp(18px, 3.2vw, 52px); }
 .nav { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 25px; line-height: 1.2; }
 .brand svg { width: 46px; height: 46px; flex-shrink: 0; }
 .brand small { display: block; font-size: 12px; letter-spacing: .32em; margin-top: 3px; font-weight: 800; }
-.nav-links { display: flex; align-items: center; gap: 6px; }
-.nav-links a:not(.btn) { padding: 10px 12px; border-radius: 12px; font-size: 18px; font-weight: 800; }
+.nav-links { display: flex; align-items: center; gap: clamp(4px, 1.2vw, 22px); }
+.nav-links a:not(.btn) { padding: 10px 12px; border-radius: 12px; font-size: 20px; font-weight: 900; }
 .nav-links a:not(.btn):hover, .nav-links a[aria-current="true"] { background: var(--pale); }
-.nav-links .btn { margin-left: 8px; }
+.nav-links .btn { margin-left: 12px; }
+.btn.outline { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 2px var(--ink); }
+.btn.outline:hover { background: var(--mint); }
 .menu-btn { display: none; }
 .mobile-nav { display: none; }
 
@@ -145,6 +148,7 @@ header.site-header { position: sticky; top: 0; z-index: 40; height: var(--header
   justify-content: center;
 }
 .tile { position: relative; perspective: 900px; min-width: 0; }
+.tile, .feature, .entry, .hero-copy { box-shadow: inset 0 0 0 .5px #07533e14; }
 .tile-inner { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .8s ease; }
 .tile.flipped .tile-inner { transform: rotateY(180deg); }
 .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: block; overflow: hidden; }
@@ -154,27 +158,29 @@ header.site-header { position: sticky; top: 0; z-index: 40; height: var(--header
 .entry {
   display: flex; flex-direction: column; justify-content: space-between;
   padding: calc(var(--cell) * .12);
-  background: var(--green); color: var(--white);
+  background: var(--ink); color: var(--white);
   font-weight: 900; transition: background-color .2s;
 }
-.entry:nth-of-type(even) { background: var(--ink); }
-.entry .num { display: block; font-size: calc(var(--cell) * .2); line-height: 1; margin-bottom: calc(var(--cell) * .08); }
-.entry .label { display: block; font-size: clamp(17px, calc(var(--cell) * .15), 30px); line-height: 1.25; }
-.entry .go { align-self: flex-end; font-size: calc(var(--cell) * .17); line-height: 1; }
+.entry .num { display: block; font-size: calc(var(--cell) * .24); line-height: 1; margin-bottom: calc(var(--cell) * .07); letter-spacing: .02em; }
+.entry .label { display: block; font-size: clamp(17px, calc(var(--cell) * .17), 34px); line-height: 1.25; letter-spacing: .02em; }
+.entry .go { align-self: flex-end; font-size: calc(var(--cell) * .2); line-height: 1; }
 .entry:hover, .entry:focus-visible { background: var(--yellow); color: var(--ink); }
 .entry:focus-visible { outline: 4px solid var(--orange); outline-offset: -4px; border-radius: 0; }
 .hero-copy {
   background: var(--cream);
   display: flex; flex-direction: column; justify-content: center;
-  padding: calc(var(--cell) * .2) calc(var(--cell) * .22);
+  padding: calc(var(--cell) * .14) calc(var(--cell) * .2);
   min-width: 0;
 }
-.hero-copy h1 { font-size: clamp(34px, calc(var(--cell) * .34), 68px); letter-spacing: .02em; line-height: 1.22; color: var(--ink); }
-.hero-copy .sub { margin-top: calc(var(--cell) * .08); font-size: clamp(18px, calc(var(--cell) * .12), 23px); color: var(--ink); }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: calc(var(--cell) * .14); }
-.hero-actions .btn { min-height: 50px; }
-.hero-bar { background: var(--paper); border-bottom: 1px solid var(--line); }
-.hero-bar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 0; font-size: 18px; font-weight: 800; }
+.hero-copy h1 { font-size: clamp(32px, calc(var(--cell) * .42), 96px); letter-spacing: 0; line-height: 1.16; color: var(--ink); white-space: nowrap; }
+.hero-copy .sub { margin-top: calc(var(--cell) * .07); font-size: clamp(17px, calc(var(--cell) * .12), 26px); letter-spacing: .16em; line-height: 1.5; color: var(--ink); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: calc(var(--cell) * .12); }
+.hero-actions .btn { min-height: clamp(44px, calc(var(--cell) * .24), 52px); padding-inline: clamp(18px, calc(var(--cell) * .14), 28px); border-radius: 8px; font-size: clamp(17px, calc(var(--cell) * .11), 22px); letter-spacing: .06em; }
+.hero-bar { background: var(--white); border-bottom: 1px solid #07533e1a; }
+.hero-bar .wrap { position: relative; display: flex; justify-content: center; align-items: center; gap: 16px; min-height: 64px; padding: 10px 0; font-size: 20px; font-weight: 900; }
+.hero-bar .tagline { display: inline-flex; align-items: center; gap: 14px; letter-spacing: .08em; }
+.hero-bar .tagline .down { font-size: 22px; }
+.hero-bar .motion-toggle { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
 .motion-toggle { background: var(--pale); color: var(--ink); }
 .intro-strip { background: var(--yellow); }
 .intro-strip .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 26px 0; }
@@ -316,6 +322,10 @@ th { background: var(--pale); }
 .workspace-card p { margin: 14px 0; }
 .workspace-card ul { margin: 8px 0 18px; padding-left: 22px; }
 .workspace-card .btn { margin-top: auto; align-self: flex-start; }
+.process-cases { margin-top: 72px; }
+.process-cases .section-head h3 { font-size: clamp(28px, 2.6vw, 36px); }
+.case-card ol { padding-left: 24px; margin: 12px 0 0; }
+.case-card ol li { margin: 4px 0; }
 .partner-banner { margin-top: 32px; padding: 32px; border-radius: 24px; background: #deebbd; display: flex; justify-content: space-between; align-items: center; gap: 24px; }
 .news-empty { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 28px; align-items: center; background: var(--white); border-radius: 24px; padding: 28px; }
 .news-empty .sprite-art { border-radius: 18px; background: var(--paper); }
@@ -489,8 +499,12 @@ select.inline { min-height: 44px; padding: 6px 10px; border-width: 2px; border-r
   .mobile-nav a { display: flex; align-items: center; gap: 14px; min-height: 58px; padding: 8px 6px; border-bottom: 1px solid #07533e1f; font-size: 20px; font-weight: 900; }
   .mobile-nav a svg { width: 36px; height: 36px; flex-shrink: 0; }
   .mobile-nav .btn { margin-top: 20px; width: 100%; border-bottom: 0; justify-content: center; }
-  .hero-bar .wrap { font-size: 15px; gap: 10px; }
+  .hero-bar .wrap { justify-content: space-between; font-size: 15px; gap: 10px; }
   .hero-bar .wrap span { min-width: 0; }
+  .hero-bar .tagline { letter-spacing: 0; gap: 8px; white-space: nowrap; }
+  .hero-bar .tagline .down { display: none; }
+  .hero-bar .motion-toggle { position: static; transform: none; }
+  .process-cases { margin-top: 48px; }
   .motion-toggle { flex-shrink: 0; min-height: 44px; padding: 6px 12px; font-size: 15px; }
   .intro-strip .wrap { flex-direction: column; align-items: flex-start; gap: 6px; }
   .intro-strip p { font-size: 20px; }
@@ -554,7 +568,7 @@ select.inline { min-height: 44px; padding: 6px 10px; border-width: 2px; border-r
       <a href="#products">產地好物</a>
       <a href="#resources">資源專欄</a>
       <a href="#about">關於我們</a>
-      <a href="#contact" class="btn solid small">預約初談 <span class="arrow">↗</span></a>
+      <a href="#contact" class="btn outline small">預約初談 <span class="arrow">↗</span></a>
     </nav>
     <button class="btn solid menu-btn" type="button" aria-expanded="false" aria-controls="mobile-nav">選單 ☰</button>
   </div>
@@ -568,7 +582,7 @@ select.inline { min-height: 44px; padding: 6px 10px; border-width: 2px; border-r
     </section>
     <div class="hero-bar">
       <div class="wrap">
-        <span>一塊田　一群人　一起慢慢做好</span>
+        <a class="tagline" href="#services"><span>一塊田　一群人　一起慢慢做好</span><span class="down" aria-hidden="true">↓</span></a>
         <button class="btn small motion-toggle" type="button" id="motion-toggle" aria-pressed="false">暫停動畫 Ⅱ</button>
       </div>
     </div>
@@ -669,15 +683,6 @@ select.inline { min-height: 44px; padding: 6px 10px; border-width: 2px; border-r
       </div>
     </section>
 
-    <section class="section" id="cases" aria-labelledby="cases-title">
-      <div class="wrap">
-        <div class="eyebrow">工作方法看得見</div>
-        <h2 id="cases-title">看看陪跑會怎麼進行</h2>
-        <p style="margin:20px 0 28px">以下為模擬情境　用來說明工作方法　不是真實客戶或既有成果</p>
-        <div class="grid-3" id="case-grid"></div>
-      </div>
-    </section>
-
     <section class="section wrap" id="process" aria-labelledby="process-title">
       <div class="eyebrow">把事情一點一點做好</div>
       <h2 id="process-title">從聊聊到一起行動</h2>
@@ -696,6 +701,13 @@ select.inline { min-height: 44px; padding: 6px 10px; border-width: 2px; border-r
           </div>
         </div>
       </div>
+      <div class="process-cases" aria-labelledby="cases-title">
+        <div class="section-head">
+          <div><div class="eyebrow">模擬情境</div><h3 id="cases-title">三種常見狀況會這樣進行</h3></div>
+          <p>用來說明上面五個步驟怎麼落地<br>不是真實客戶或既有成果</p>
+        </div>
+        <div class="grid-3" id="case-grid"></div>
+      </div>
       <div class="teamline">
         <div>
           <div class="eyebrow">來自不同專長的我們</div>
@@ -703,17 +715,6 @@ select.inline { min-height: 44px; padding: 6px 10px; border-width: 2px; border-r
           <p>團隊包含以下職務　實際合作分工依專案安排</p>
         </div>
         <div class="tags" style="align-content:center"><span class="tag">募資提案</span><span class="tag">產品與財務</span><span class="tag">網站製作</span><span class="tag">視覺設計</span><span class="tag">影音製作</span><span class="tag">內容行銷</span></div>
-      </div>
-    </section>
-
-    <section class="section wrap" id="workspace" aria-labelledby="workspace-title">
-      <div class="eyebrow">合作之後的日常</div>
-      <h2 id="workspace-title">一起看見目前的進度</h2>
-      <p style="margin:20px 0 28px">工作台規劃示意　以實際合作需求選擇工具</p>
-      <div class="grid-2" id="workspace-grid"></div>
-      <div class="partner-banner">
-        <div><h3>把不同的力量帶到產地</h3><p>企業選物　通路媒合　影音內容　資源合作</p><p class="note">合作夥伴取得同意後陸續介紹</p></div>
-        <a class="btn" href="#contact" data-topic="企業合作與贊助" data-note="我想聊聊企業合作或贊助">一起聊合作 ↗</a>
       </div>
     </section>
 
@@ -1141,21 +1142,34 @@ window.DEMO = {
     `<rect width="100" height="100" fill="${M}"/>${sproutPath(50, 86, 1.1, D, D, G)}`,
     // 11 黃色斜紋
     `<rect width="100" height="100" fill="${Y}"/><g stroke="${C}" stroke-width="4"><path d="M-10 30L30-10M-10 60L60-10M-10 90L90-10M10 110L110 10M40 110L110 40M70 110L110 70"/></g>`,
+    // 12 綠色拱形波紋
+    `<rect width="100" height="100" fill="${C}"/><g fill="none" stroke="${L}" stroke-width="8" stroke-linecap="round">${[26, 54, 82].map((y) => `<path d="M-12 ${y}${Array.from({ length: 5 }, () => 'q12.5-17 25 0').join('')}"/>`).join('')}</g>`,
+    // 13 葉片植株
+    `<rect width="100" height="100" fill="${C}"/><path d="M50 98V20" stroke="${G}" stroke-width="3.5"/>${[[34, 1], [52, .9], [70, .8]].map(([y, k]) => `<path d="M49 ${y + 14}C40 ${y + 16} 24 ${y + 6} 22 ${y - 6}C36 ${y - 8} 46 ${y} 49 ${y + 14}Z" fill="${L}" transform="scale(1)"/><path d="M51 ${y + 14}C60 ${y + 16} 76 ${y + 6} 78 ${y - 6}C64 ${y - 8} 54 ${y} 51 ${y + 14}Z" fill="${G}"/>`).join('')}<path d="M50 30C42 24 42 12 50 4C58 12 58 24 50 30Z" fill="${L}"/>`,
+    // 14 三株嫩芽與土丘
+    `<rect width="100" height="100" fill="${C}"/><path d="M-6 100Q10 76 28 100ZM26 100Q50 72 74 100ZM72 100Q90 76 106 100Z" fill="${D}"/>${sproutPath(14, 90, .5, M, M, L)}${sproutPath(50, 86, .55, M, M, L)}${sproutPath(86, 90, .5, M, M, L)}`,
   ];
 
   /* ---------- 大圖塊 ---------- */
   const lattice = (x0, y0, w, h, step, color) => {
     let d = '';
     for (let k = -h; k < w + h; k += step) d += `M${x0 + k} ${y0}l${h} ${h}M${x0 + k + h} ${y0}l${-h} ${h}`;
-    return `<path d="${d}" stroke="${color}" stroke-width="3"/>`;
+    return `<path d="${d}" stroke="${color}" stroke-width="4"/>`;
+  };
+  const corn = (h) => {
+    const H = 100 * h, top = H * .08, cob = H * .7;
+    let kernels = '';
+    const rows = Math.floor((cob - 16) / 10.2);
+    for (let r = 0; r < rows; r++) for (let c = 0; c < 4; c++) kernels += `<rect x="${32.4 + c * 9}" y="${top + 9 + r * 10.2}" width="8" height="8.6" rx="2.6" fill="#fbe86a"/>`;
+    return `<svg viewBox="0 0 100 ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="${H}" fill="${D}"/><rect x="29" y="${top}" width="42" height="${cob}" rx="21" fill="${Y}"/>${kernels}` +
+      `<path d="M50 ${H - 4}C18 ${H * .86} 8 ${H * .6} 16 ${H * .4}C28 ${H * .54} 40 ${H * .7} 54 ${H * .84}Z" fill="${L}"/>` +
+      `<path d="M50 ${H - 4}C82 ${H * .86} 92 ${H * .6} 84 ${H * .4}C72 ${H * .54} 60 ${H * .7} 46 ${H * .84}Z" fill="${M}"/>` +
+      `<path d="M50 ${H - 4}C40 ${H * .9} 36 ${H * .78} 42 ${H * .64}C50 ${H * .74} 56 ${H * .86} 56 ${H - 4}Z" fill="${G}"/></svg>`;
   };
   const FEATURES = {
-    pineapple: { w: 1, h: 2, label: '鳳梨', svg: `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${C}"/><path d="M50 92L30 34L46 62L44 8L56 60L66 22L62 70L86 40L62 94Z" fill="${L}"/><path d="M50 92L18 58L40 76L50 30L58 78L80 60Z" fill="${G}"/><clipPath id="pine-body"><rect x="16" y="84" width="68" height="110" rx="32"/></clipPath><rect x="16" y="84" width="68" height="110" rx="32" fill="${Y}"/><g clip-path="url(#pine-body)">${lattice(16, 84, 68, 110, 17, '#ffffffcc')}</g></svg>` },
-    corn: { w: 1, h: 2, label: '玉米', svg: (() => {
-      let kernels = '';
-      for (let r = 0; r < 13; r++) for (let c = 0; c < 4; c++) kernels += `<rect x="${33 + c * 8.6}" y="${28 + r * 9.2}" width="7.4" height="8" rx="2.4" fill="#f9e35a"/>`;
-      return `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${D}"/><rect x="30" y="22" width="40" height="132" rx="20" fill="${Y}"/>${kernels}<path d="M50 196C20 170 14 120 26 84C30 118 38 150 52 170Z" fill="${L}"/><path d="M50 196C80 170 86 120 74 84C70 118 62 150 48 170Z" fill="${M}"/><path d="M50 196C40 176 38 160 44 140C48 160 52 176 56 196Z" fill="${G}"/></svg>`;
-    })() },
+    pineapple: { w: 1, h: 2, label: '鳳梨', svg: `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${C}"/><clipPath id="pine-body"><rect x="0" y="100" width="100" height="100"/></clipPath><rect x="0" y="100" width="100" height="100" fill="${Y}"/><g clip-path="url(#pine-body)">${lattice(0, 100, 100, 100, 20, '#ffffff')}</g>` +
+      `<path d="M50 104L2 34L36 66Z" fill="${L}"/><path d="M50 104L98 34L64 66Z" fill="${L}"/><path d="M50 104L16 14L44 58Z" fill="${G}"/><path d="M50 104L84 14L56 58Z" fill="${G}"/><path d="M50 104L38 40L50 4L62 40Z" fill="${L}"/><path d="M50 104L6 76L30 80Z" fill="${M}"/><path d="M50 104L94 76L70 80Z" fill="${M}"/></svg>` },
+    corn: { w: 1, h: 2, label: '玉米', svg: corn(2), svg3: corn(3) },
     lychee: { w: 2, h: 2, label: '荔枝', svg: (() => {
       const fruit = (cx, cy, r) => {
         let bumps = '';
@@ -1168,10 +1182,17 @@ window.DEMO = {
 
   /* ---------- 版型：依欄數切換（每個項目：類型、欄、列、寬、高） ---------- */
   const LAYOUTS = {
-    10: { rows: 5, items: [
-      ['entry', 2, 0, 1, 1, 0], ['feature', 4, 0, 1, 2, 'pineapple'], ['entry', 7, 0, 1, 1, 1],
-      ['feature', 6, 1, 1, 3, 'corn'], ['copy', 0, 2, 4, 2], ['feature', 4, 2, 2, 2, 'lychee'],
-      ['entry', 8, 2, 1, 2, 2], ['entry', 4, 4, 1, 1, 3],
+    // 桌面版依參考圖「最新首頁方向」：8 欄 5 列，空白格的圖案也照參考圖排列
+    8: { rows: 5, items: [
+      ['entry', 2, 0, 1, 1, 0], ['feature', 4, 0, 1, 2, 'pineapple'], ['entry', 6, 0, 1, 1, 1],
+      ['feature', 5, 1, 1, 3, 'corn'], ['copy', 0, 2, 3, 2], ['feature', 3, 2, 2, 2, 'lychee'],
+      ['entry', 7, 2, 1, 2, 2], ['entry', 3, 4, 1, 1, 3],
+    ], tiles: [
+      [0, 1, -1, 2, -1, 6, -1, 12],
+      [3, 4, 5, 6, -1, -1, 2, 13],
+      [-1, -1, -1, -1, -1, -1, 7, -1],
+      [-1, -1, -1, -1, -1, -1, 10, -1],
+      [8, 4, 2, -1, 14, 3, 4, 5],
     ] },
     7: { rows: 6, items: [
       ['entry', 1, 0, 1, 1, 0], ['feature', 3, 0, 1, 2, 'pineapple'], ['entry', 5, 0, 1, 1, 1],
@@ -1192,13 +1213,13 @@ window.DEMO = {
     ['04', '最新消息', '#news', 'news'],
   ];
 
-  const COPY_HTML = `<h1 id="hero-title">把土地的美好<br>帶進每一天</h1><p class="sub">認識當季農產　發現產地故事</p><div class="hero-actions"><a class="btn solid" href="#services">我是小農 <span class="arrow">↗</span></a><a class="btn yellow" href="#support">我要支持小農 <span class="arrow">↗</span></a></div>`;
+  const COPY_HTML = `<h1 id="hero-title">把土地的美好<br>帶進每一天</h1><p class="sub">認識當季農產　發現產地故事</p><div class="hero-actions"><a class="btn solid" href="#products" data-action="products-season">探索當季農產 <span class="arrow">↗</span></a></div>`;
 
   const grid = document.getElementById('mosaic');
   let current = '';
 
   function layoutFor(width) {
-    if (width >= 1200) return { base: 10, cols: Math.max(10, Math.round(width / 150)) };
+    if (width >= 1000) return { base: 8, cols: Math.max(8, Math.round(width / 200)) };
     if (width >= 760) return { base: 7, cols: 7 };
     return { base: 4, cols: 4 };
   }
@@ -1222,7 +1243,10 @@ window.DEMO = {
       else if (type === 'entry') {
         const [num, label, href, action] = ENTRIES[extra];
         out.push(`<a class="entry" style="${pos}" href="${href}" data-action="${action}"><span><span class="num">${num}</span><span class="label">${label}</span></span><span class="go" aria-hidden="true">↗</span></a>`);
-      } else out.push(`<div class="feature" style="${pos}" role="img" aria-label="${FEATURES[extra].label}的幾何插圖">${FEATURES[extra].svg}</div>`);
+      } else {
+        const f = FEATURES[extra];
+        out.push(`<div class="feature" style="${pos}" role="img" aria-label="${f.label}的幾何插圖">${h === 3 && f.svg3 ? f.svg3 : f.svg}</div>`);
+      }
     });
     // 依序挑選圖案，避開左方與上方相同的圖案，讓拼磚分布更均勻
     const pick = Array.from({ length: L.rows }, () => Array(cols).fill(-1));
@@ -1230,7 +1254,9 @@ window.DEMO = {
     for (let y = 0; y < L.rows; y++) for (let x = 0; x < cols; x++) {
       if (occupied[y][x]) continue;
       let a = (x * 7 + y * 5 + n * 3) % PATTERNS.length;
-      for (let k = 0; k < PATTERNS.length; k++) {
+      const fixed = L.tiles && L.tiles[y] && L.tiles[y][x];
+      if (fixed >= 0) a = fixed;
+      else for (let k = 0; k < PATTERNS.length; k++) {
         const c = (a + k) % PATTERNS.length;
         if (c !== (x > 0 ? pick[y][x - 1] : -1) && c !== (y > 0 ? pick[y - 1][x] : -1) && c !== (x > 0 && y > 0 ? pick[y - 1][x - 1] : -1)) { a = c; break; }
       }
@@ -1309,7 +1335,6 @@ window.DEMO = {
   const NAV = [
     ['#services', '農友陪跑', 'services'], ['#plans', '陪跑方案', 'planning'], ['#products', '產地好物', 'home'],
     ['#support', '走進產地', 'about'], ['#resources', '資源專欄', 'resources'], ['#about', '關於我們', 'cases'],
-    ['#client-demo', '農友工作台示範', 'portal'], ['#admin-demo', '團隊工作台示範', 'tracking'],
   ];
   const mobileNav = $('#mobile-nav'), menuBtn = $('.menu-btn');
   mobileNav.innerHTML = NAV.map(([h, t, ic]) => `<a href="${h}">${brandIcon(ic)}${t}</a>`).join('') + `<a class="btn solid" href="#contact">預約初談 ↗</a>`;
@@ -1562,7 +1587,7 @@ window.DEMO = {
       <div class="case-art">${scene(c[3], c[0] + '的情境插畫')}</div>
       <span class="tag" style="align-self:flex-start">模擬情境</span>
       <h3>${c[0]}</h3><p>${c[1]}</p>
-      <details><summary>展開陪跑做法</summary><ul>${c[2].map((t) => `<li>${t}</li>`).join('')}</ul><p>先記錄基準值　再一起設定可追蹤的改善目標</p></details>
+      <ol>${c[2].map((t) => `<li>${t}</li>`).join('')}</ol>
     </article>`).join('');
 
   /* ---------- 合作流程：捲動固定場景，五階段 0 25 50 75 100 ---------- */
@@ -1594,11 +1619,7 @@ window.DEMO = {
   $$('[data-step]').forEach((b) => (b.onclick = () => { manualUntil = Date.now() + 2000; showFlow(+b.dataset.step); }));
   showFlow(0);
 
-  /* ---------- 工作台、最新消息 ---------- */
-  $('#workspace-grid').innerHTML = [
-    ['portal', '農友與顧問工作台', '把本季目標、待辦、訂單、採收與文件整理在一起', ['里程碑與 PDCA 追蹤', '採收排程與訂單狀態', '工時、預算與資料文件'], '#client-demo', '開啟農友工作台示範'],
-    ['tracking', '團隊協作工作台', '確認每個案子的窗口、分工與交付進度', ['洽詢來源與案件階段', '任務分派與交付期限', '方案到期與營收預估'], '#admin-demo', '開啟團隊工作台示範'],
-  ].map((w) => `<article class="workspace-card"><div class="ws-head">${brandIcon(w[0])}<h3>${w[1]}</h3></div><p>${w[2]}</p><ul>${w[3].map((t) => `<li>${t}</li>`).join('')}</ul><a class="btn" href="${w[4]}">${w[5]} ↗</a></article>`).join('');
+  /* ---------- 最新消息 ---------- */
   $('#news-empty').innerHTML = `${scene(5, '產地選物插圖')}<div><h3>目前還沒有正式發布的消息</h3><p style="margin:10px 0 16px">商品上架、產地體驗場次與合作夥伴，會在確認供應與取得同意後發布。想第一時間知道，可以先留下聯絡方式。</p><a class="btn" href="#contact" data-topic="其他" data-note="有新消息時請通知我">有消息時通知我 ↗</a></div>`;
 
   /* ---------- 資源專欄 ---------- */
@@ -1668,10 +1689,10 @@ window.DEMO = {
     <div class="footer-grid">
       <div><div class="footer-brand">${logoMark()}<span>田序共創<small>FIELDWISE</small></span></div><p style="margin-top:14px;font-size:17px">從高雄大樹出發，陪小農整理經營、推廣產地好物，連結產地與生活。</p><p style="margin-top:8px;font-size:16px">品牌名稱暫定　公司名稱與統一編號建置中</p></div>
       <div><h4>逛逛網站</h4><ul><li><a href="#products">產地好物</a></li><li><a href="#support">走進產地</a></li><li><a href="#about">我們的故事</a></li><li><a href="#news">最新消息</a></li></ul></div>
-      <div><h4>給農友</h4><ul><li><a href="#services">農友陪跑</a></li><li><a href="#plans">陪跑方案</a></li><li><a href="#resources">資源專欄</a></li><li><a href="#client-demo">農友工作台示範</a></li><li><a href="#admin-demo">團隊工作台示範</a></li></ul></div>
+      <div><h4>給農友</h4><ul><li><a href="#services">農友陪跑</a></li><li><a href="#plans">陪跑方案</a></li><li><a href="#resources">資源專欄</a></li><li><a href="#process">合作流程</a></li></ul></div>
       <div><h4>聯絡我們${testTag}</h4><ul style="font-size:17px"><li>Email　${ci.email}</li><li>電話　${ci.phone}</li><li>LINE　${ci.line}</li><li>${SITE.contact.hours}</li></ul><a class="btn yellow small" style="margin-top:14px" href="#contact">預約初談 ↗</a></div>
     </div>
-    <div class="footer-bottom"><span>© 2026 田序共創 FIELDWISE（暫定品牌）・案例、工作台與商品資訊為示範或規劃示意</span><span><a href="#privacy">隱私權政策</a>　<a href="#terms">服務條款</a>　<a href="#disclaimer">免責聲明</a>　<a href="#top">回到頂端 ↑</a></span></div>
+    <div class="footer-bottom"><span>© 2026 田序共創 FIELDWISE（暫定品牌）・案例與商品資訊為模擬情境或規劃示意</span><span><a href="#privacy">隱私權政策</a>　<a href="#terms">服務條款</a>　<a href="#disclaimer">免責聲明</a>　<a href="#top">回到頂端 ↑</a></span></div>
     <p style="margin-top:12px;font-size:15px;opacity:.85">本站不隸屬、也不代表任何政府機關或農會；合作夥伴將於確認並取得同意後刊登。</p>
   </div>`;
 

@@ -48,7 +48,6 @@
   const NAV = [
     ['#services', '農友陪跑', 'services'], ['#plans', '陪跑方案', 'planning'], ['#products', '產地好物', 'home'],
     ['#support', '走進產地', 'about'], ['#resources', '資源專欄', 'resources'], ['#about', '關於我們', 'cases'],
-    ['#client-demo', '農友工作台示範', 'portal'], ['#admin-demo', '團隊工作台示範', 'tracking'],
   ];
   const mobileNav = $('#mobile-nav'), menuBtn = $('.menu-btn');
   mobileNav.innerHTML = NAV.map(([h, t, ic]) => `<a href="${h}">${brandIcon(ic)}${t}</a>`).join('') + `<a class="btn solid" href="#contact">預約初談 ↗</a>`;
@@ -301,7 +300,7 @@
       <div class="case-art">${scene(c[3], c[0] + '的情境插畫')}</div>
       <span class="tag" style="align-self:flex-start">模擬情境</span>
       <h3>${c[0]}</h3><p>${c[1]}</p>
-      <details><summary>展開陪跑做法</summary><ul>${c[2].map((t) => `<li>${t}</li>`).join('')}</ul><p>先記錄基準值　再一起設定可追蹤的改善目標</p></details>
+      <ol>${c[2].map((t) => `<li>${t}</li>`).join('')}</ol>
     </article>`).join('');
 
   /* ---------- 合作流程：捲動固定場景，五階段 0 25 50 75 100 ---------- */
@@ -333,11 +332,7 @@
   $$('[data-step]').forEach((b) => (b.onclick = () => { manualUntil = Date.now() + 2000; showFlow(+b.dataset.step); }));
   showFlow(0);
 
-  /* ---------- 工作台、最新消息 ---------- */
-  $('#workspace-grid').innerHTML = [
-    ['portal', '農友與顧問工作台', '把本季目標、待辦、訂單、採收與文件整理在一起', ['里程碑與 PDCA 追蹤', '採收排程與訂單狀態', '工時、預算與資料文件'], '#client-demo', '開啟農友工作台示範'],
-    ['tracking', '團隊協作工作台', '確認每個案子的窗口、分工與交付進度', ['洽詢來源與案件階段', '任務分派與交付期限', '方案到期與營收預估'], '#admin-demo', '開啟團隊工作台示範'],
-  ].map((w) => `<article class="workspace-card"><div class="ws-head">${brandIcon(w[0])}<h3>${w[1]}</h3></div><p>${w[2]}</p><ul>${w[3].map((t) => `<li>${t}</li>`).join('')}</ul><a class="btn" href="${w[4]}">${w[5]} ↗</a></article>`).join('');
+  /* ---------- 最新消息 ---------- */
   $('#news-empty').innerHTML = `${scene(5, '產地選物插圖')}<div><h3>目前還沒有正式發布的消息</h3><p style="margin:10px 0 16px">商品上架、產地體驗場次與合作夥伴，會在確認供應與取得同意後發布。想第一時間知道，可以先留下聯絡方式。</p><a class="btn" href="#contact" data-topic="其他" data-note="有新消息時請通知我">有消息時通知我 ↗</a></div>`;
 
   /* ---------- 資源專欄 ---------- */
@@ -407,10 +402,10 @@
     <div class="footer-grid">
       <div><div class="footer-brand">${logoMark()}<span>田序共創<small>FIELDWISE</small></span></div><p style="margin-top:14px;font-size:17px">從高雄大樹出發，陪小農整理經營、推廣產地好物，連結產地與生活。</p><p style="margin-top:8px;font-size:16px">品牌名稱暫定　公司名稱與統一編號建置中</p></div>
       <div><h4>逛逛網站</h4><ul><li><a href="#products">產地好物</a></li><li><a href="#support">走進產地</a></li><li><a href="#about">我們的故事</a></li><li><a href="#news">最新消息</a></li></ul></div>
-      <div><h4>給農友</h4><ul><li><a href="#services">農友陪跑</a></li><li><a href="#plans">陪跑方案</a></li><li><a href="#resources">資源專欄</a></li><li><a href="#client-demo">農友工作台示範</a></li><li><a href="#admin-demo">團隊工作台示範</a></li></ul></div>
+      <div><h4>給農友</h4><ul><li><a href="#services">農友陪跑</a></li><li><a href="#plans">陪跑方案</a></li><li><a href="#resources">資源專欄</a></li><li><a href="#process">合作流程</a></li></ul></div>
       <div><h4>聯絡我們${testTag}</h4><ul style="font-size:17px"><li>Email　${ci.email}</li><li>電話　${ci.phone}</li><li>LINE　${ci.line}</li><li>${SITE.contact.hours}</li></ul><a class="btn yellow small" style="margin-top:14px" href="#contact">預約初談 ↗</a></div>
     </div>
-    <div class="footer-bottom"><span>© 2026 田序共創 FIELDWISE（暫定品牌）・案例、工作台與商品資訊為示範或規劃示意</span><span><a href="#privacy">隱私權政策</a>　<a href="#terms">服務條款</a>　<a href="#disclaimer">免責聲明</a>　<a href="#top">回到頂端 ↑</a></span></div>
+    <div class="footer-bottom"><span>© 2026 田序共創 FIELDWISE（暫定品牌）・案例與商品資訊為模擬情境或規劃示意</span><span><a href="#privacy">隱私權政策</a>　<a href="#terms">服務條款</a>　<a href="#disclaimer">免責聲明</a>　<a href="#top">回到頂端 ↑</a></span></div>
     <p style="margin-top:12px;font-size:15px;opacity:.85">本站不隸屬、也不代表任何政府機關或農會；合作夥伴將於確認並取得同意後刊登。</p>
   </div>`;
 

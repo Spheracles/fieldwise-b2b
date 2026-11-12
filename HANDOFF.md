@@ -7,7 +7,7 @@
 
 ## 1. 開新對話時，直接貼這段給 Claude
 
-> 我要繼續做田序共創 FIELDWISE 的 **B2B 版網站**（對象是中盤商、通路）。請先讀專案文件 `claude/FIELDWISE-B2B版-交接說明.md`，並把 GitHub 儲存庫 `Spheracles/ieldwise-b2b` 加進這個對話（需要推送權限）。原始碼在 `site/`，修改後用 `node site/build.mjs` 產生 `docs/index.html`，GitHub Pages 從 `main` 的 `/docs` 發佈。不要修改政府提案版 `Spheracles/fieldwise-web`。
+> 我要繼續做田序共創 FIELDWISE 的 **B2B 版網站**（對象是中盤商、通路）。請先讀專案文件 `claude/FIELDWISE-B2B版-交接說明.md`，並把 GitHub 儲存庫 `Spheracles/fieldwise-b2b` 加進這個對話（需要推送權限）。原始碼在 `site/`，修改後用 `node site/build.mjs` 產生 `docs/index.html`，GitHub Pages 從 `main` 的 `/docs` 發佈。不要修改政府提案版 `Spheracles/fieldwise-web`。
 
 如果需要交接包裡的參考圖片與企畫書，請在新對話重新上傳：
 - `田序共創網站交接包.zip`（00-網站設計與互動總覽.html、design-tokens.json、最新首頁方向.png、企畫書與風格統一提案 docx、定稿插圖）
@@ -21,7 +21,7 @@
 |---|---|
 | 原始碼 | `site/`（純 HTML／CSS／JavaScript，無需安裝套件） |
 | 建置 | `node site/build.mjs` → 單一檔案 `docs/index.html`（約 0.9 MB，內嵌樣式、程式、10 張圖片）；`docs/media/` 放情境影片 |
-| GitHub | `Spheracles/ieldwise-b2b`（拆分時建立的新儲存庫；網址 https://spheracles.github.io/ieldwise-b2b/）；GitHub Pages 需在 Settings → Pages 設為 `main` / `/docs` |
+| GitHub | `Spheracles/fieldwise-b2b`（拆分時建立的新儲存庫；網址 https://spheracles.github.io/fieldwise-b2b/）；GitHub Pages 需在 Settings → Pages 設為 `main` / `/docs` |
 | 聯絡表單 | **暫停送出**（`SITE.googleForm.enabled = false`），只產生可複製摘要；需另建 B2B 專用 Google 表單 |
 | 聯絡方式 | 測試模式（`test@example.com`、`09XX-XXX-XXX`、「LINE 測試帳號」並標示「測試資料」） |
 | 內容方向 | 仍是第四版的「小農＋支持小農的民眾＋企業合作」混合定位，**尚未針對中盤商 B2B 改寫**（見第 5 節） |
@@ -83,4 +83,4 @@
 ## 6. 歷史紀錄
 
 - 2026-11-11：依交接包完成第四版改版（新首頁拼磚、商品專區、新表單），曾發佈在 `fieldwise-web`。
-- 2026-11-12：拆分。`fieldwise-web` 恢復為改版前的 React 政府提案版；第四版搬到 `ieldwise-b2b`，表單暫停送出。
+- 2026-11-12：拆分。`fieldwise-web` 恢復為改版前的 React 政府提案版；第四版搬到 `fieldwise-b2b`，表單暫停送出。

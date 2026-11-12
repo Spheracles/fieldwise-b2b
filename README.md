@@ -4,7 +4,7 @@
 
 從高雄大樹出發，陪小農整理經營、推廣產地好物，連結產地體驗與企業合作。
 
-- 線上網站：https://spheracles.github.io/ieldwise-b2b/（GitHub Pages 從 `main` 分支的 `/docs` 發佈）
+- 線上網站：https://spheracles.github.io/fieldwise-b2b/（GitHub Pages 從 `main` 分支的 `/docs` 發佈）
 - 視覺與互動依交接包「00-網站設計與互動總覽」與第三版網站整併，並套用最新首頁方向。
 
 ## 怎麼修改
