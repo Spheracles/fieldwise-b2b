@@ -171,6 +171,12 @@
     });
     if ($('#item').value) body.append(`entry.${Q.item.entry}`, $('#item').value);
     body.append(`entry.${Q.consent.entry}`, Q.consent.value);
+    // Google 表單現在會拒收缺少 fbzx／partialResponse 的回覆（HTTP 400），由網站產生一組隨機值
+    const fbzx = '-' + String(Math.floor(Math.random() * 9e17) + 1e17);
+    body.append('fvv', '1');
+    body.append('pageHistory', '0');
+    body.append('fbzx', fbzx);
+    body.append('partialResponse', `[null,null,"${fbzx}"]`);
     return body;
   }
   window.buildInquiryBody = () => buildBody().toString(); // 測試用
