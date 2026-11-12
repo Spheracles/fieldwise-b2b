@@ -14,7 +14,7 @@ window.SITE = {
 
   /** 預約表單送到 B2B 專用 Google 表單（題目與欄位代碼見 INQUIRY）；enabled 改成 false 只產生本機摘要 */
   googleForm: {
-    enabled: true, // 2026-11-12 起送到 B2B 專用表單（選項已逐一比對，表單無必填題）
+    enabled: false, // 2026-11-12 測試：Google 表單會靜默丟棄非表單頁送出的回覆（缺頁面 token），改用其他送出方式前先關閉
     action: 'https://docs.google.com/forms/d/e/1FAIpQLSfsyj72h7iRJuRbjCZ0nq7LagC9QwpyjtALBuJUabzUx_2hPg/formResponse',
   },
 
