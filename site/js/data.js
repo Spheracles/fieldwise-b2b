@@ -12,20 +12,10 @@ window.SITE = {
   testContact: { email: 'test@example.com', phone: '09XX-XXX-XXX', line: 'LINE 測試帳號' },
   contact: { email: null, phone: null, lineUrl: null, hours: '週一至週五 09:00–18:00（暫定）' },
 
-  /** 預約表單送到 Google 表單；enabled 改成 false 只產生本機摘要 */
+  /** 預約表單送到 B2B 專用 Google 表單（題目與欄位代碼見 INQUIRY）；enabled 改成 false 只產生本機摘要 */
   googleForm: {
-    // B2B 版尚未建立專用 Google 表單：暫時只產生摘要、不送出。建好新表單後更新 action 與 fields 再改回 true
-    enabled: false,
-    action: 'https://docs.google.com/forms/d/e/1FAIpQLSf7ONEeesRtgpViw_gXTzVPUWWjBT_kV2r6QdQLWj6sjnHlWQ/formResponse',
-    fields: {
-      name: 'entry.1308064626',     // 姓名／稱呼
-      company: 'entry.425635036',   // 單位／農場名稱
-      contact: 'entry.1307253599',  // 原「Email」題，現收「聯絡方式」（Email、電話或 LINE ID）
-      topics: 'entry.1636663631',   // 原「主要問題」題，現收「想聊的主題」
-      item: 'entry.1227439472',     // 原「有興趣的方案」題，現收「詢問的方案或商品」
-      notes: 'entry.647637091',     // 補充說明
-      consentAt: 'entry.94807364',  // 個資同意時間
-    },
+    enabled: false, // Google 表單設定調整完成並測試送出成功後改為 true
+    action: 'https://docs.google.com/forms/d/e/1FAIpQLSfsyj72h7iRJuRbjCZ0nq7LagC9QwpyjtALBuJUabzUx_2hPg/formResponse',
   },
 
   officialLinks: [
@@ -37,6 +27,55 @@ window.SITE = {
 };
 
 window.TOPICS = ['農友陪跑', '商品詢問', '產地體驗', '企業合作與贊助', '其他'];
+
+/* 預約初談題目：entry 為 Google 表單欄位代碼，options 必須和 Google 表單選項文字完全一致。
+ * group：all 所有人、b2b 通路與採購、farm 農友與產地夥伴、other 其他；other: true 代表有「其他」可自填。
+ * 必填檢查由網站處理，Google 表單本身所有題目都不設必填（否則分流後沒顯示的題目會讓送出失敗）。 */
+window.INQUIRY = {
+  identity: { entry: 1037193855, label: '你是哪一種身分', options: ['通路', '中盤商採購', '企業選物', '禮品採購', '零售門市', '餐飲烘焙', '農友', '產地夥伴'], other: true,
+    groups: { 通路: 'b2b', 中盤商採購: 'b2b', 企業選物: 'b2b', 禮品採購: 'b2b', 零售門市: 'b2b', 餐飲烘焙: 'b2b', 農友: 'farm', 產地夥伴: 'farm', 其他: 'other' } },
+  sections: [
+    { group: 'all', title: '基本資料', fields: [
+      { key: 'name', entry: 267669273, label: '怎麼稱呼你', type: 'text', required: true, autocomplete: 'name', placeholder: '姓名或稱呼' },
+      { key: 'title', entry: 1813982300, label: '職稱', type: 'text', placeholder: '例如採購、店長、負責人' },
+      { key: 'email', entry: 810943491, label: 'Email', type: 'email', required: true, autocomplete: 'email', help: '報價與規格資料會寄到這裡' },
+      { key: 'phone', entry: 419320035, label: '聯絡電話', type: 'tel', autocomplete: 'tel' },
+      { key: 'line', entry: 1017564022, label: 'LINE ID', type: 'text' },
+      { key: 'contactPref', entry: 791801992, label: '方便聯絡的方式與時段', type: 'chips', join: true, options: ['Email', '電話', 'LINE', '平日上午', '平日下午', '時段不限'] },
+    ] },
+    { group: 'b2b', title: '採購需求', fields: [
+      { key: 'company', entry: 155591189, label: '公司名稱', type: 'text', required: true, autocomplete: 'organization' },
+      { key: 'taxId', entry: 1293758105, label: '統一編號', type: 'text', inputmode: 'numeric', maxlength: 8, help: '開立發票用　8 碼數字' },
+      { key: 'channel', entry: 561613363, label: '通路類型', type: 'checkbox', required: true, options: ['批發商', '中盤商', '連鎖零售', '超市', '電商平台', '企業禮品', '餐飲或烘焙原料'], other: true },
+      { key: 'region', entry: 974963602, label: '主要銷售區域', type: 'text', placeholder: '例如北部、全台、海外' },
+      { key: 'products', entry: 1996537503, label: '有興趣的品項', type: 'checkbox', required: true, options: ['精品金鑽鳳梨禮盒', '鳳梨果乾', '鳳梨果醬', '辣味鳳梨醬', '鳳梨氣泡飲', '鳳梨青茶', '鳳妮奶油夾心餅', '鳳梨綜合體驗禮盒', '還在評估'] },
+      { key: 'coop', entry: 552719977, label: '想怎麼合作', type: 'checkbox', required: true, options: ['現有商品批發', 'OEM', '代工', '聯名銷售', '客製包裝', '企業禮盒'], other: true },
+      { key: 'scale', entry: 313863006, label: '預估採購規模', type: 'radio', options: ['先小量試單', '穩定定期進貨', '檔期或節慶訂單', '尚在評估'] },
+      { key: 'qty', entry: 279518508, label: '預估數量與單位', type: 'text', placeholder: '例如 200 盒' },
+      { key: 'timing', entry: 993406730, label: '預計需要的時間', type: 'radio', required: true, options: ['一個月內', '1 ~ 3 個月', '3 ~ 6 個月', '半年以上', '未定'] },
+      { key: 'season', entry: 174855136, label: '有沒有對應的檔期', type: 'text', placeholder: '例如中秋、春節、企業尾牙' },
+      { key: 'sample', entry: 399701413, label: '需要先寄樣品嗎', type: 'radio', options: ['是', '暫時不用'] },
+      { key: 'docs', entry: 1553727800, label: '希望先拿到哪些資料', type: 'checkbox', options: ['報價單', '產品規格', '保存期限與包裝方式', '檢驗或標示資料'], other: true },
+      { key: 'delivery', entry: 1873510612, label: '交貨地點或配送方式', type: 'text', full: true },
+      { key: 'b2bNotes', entry: 789849777, label: '其他想先說明的事', type: 'textarea' },
+    ] },
+    { group: 'farm', title: '農場與想聊的事', fields: [
+      { key: 'farm', entry: 800940346, label: '農場或產地名稱', type: 'text' },
+      { key: 'crops', entry: 371884170, label: '主要作物', type: 'text', placeholder: '例如鳳梨、荔枝' },
+      { key: 'farmTopics', entry: 1170697921, label: '想聊哪件事', type: 'checkbox', required: true, options: ['農友陪跑', '商品開發', '上架通路', '產地體驗', '企劃申請'], other: true },
+      { key: 'farmNotes', entry: 475624087, label: '目前最想改善的事', type: 'textarea', required: true, placeholder: '例如我種鳳梨　想讓更多人認識我們的產品' },
+    ] },
+    { group: 'other', title: '想聊的事', fields: [
+      { key: 'org', entry: 973891638, label: '單位名稱', type: 'text' },
+      { key: 'otherNotes', entry: 305233087, label: '想和我們聊什麼', type: 'textarea', required: true },
+    ] },
+    { group: 'all', title: '最後一步', fields: [
+      { key: 'source', entry: 323884315, label: '從哪裡認識我們', type: 'radio', options: ['網路搜尋', 'LINE', '親友介紹', '展覽與活動', '農會'], other: true },
+    ] },
+  ],
+  item: { entry: 304339795 },            // 網站帶入的詢問項目（隱藏欄位）
+  consent: { entry: 1250982913, value: '我已閱讀並同意個人資料蒐集告知' },
+};
 
 /* 六格流程插圖的格子：0 需求訪談 1 共同規劃 2 數位訂單 3 市集推廣 4 成長回顧 5 產地選物 */
 

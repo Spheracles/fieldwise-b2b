@@ -77,14 +77,7 @@
   reduced.addEventListener('change', (e) => { window.motionPaused = e.matches; motionState(); });
 
   /* ---------- 帶入聯絡表單 ---------- */
-  window.prefillContact = function ({ topics, note, item } = {}) {
-    if (topics) $$('[name="topics"]').forEach((c) => (c.checked = c.checked || topics.includes(c.value)));
-    if (note) $('#notes').value = note;
-    if (item !== undefined) $('#item').value = item;
-    const err = $('#topic-error'); if (err) err.textContent = '';
-    $('#form-banner').hidden = !(note || item);
-    if (note || item) $('#form-banner').textContent = `已帶入：${item || note}　可以再補充或修改`;
-  };
+  // window.prefillContact 由 contact.js 提供
   window.goTo = function (id) {
     if (location.hash === '#' + id) $('#' + id).scrollIntoView({ behavior: window.motionPaused ? 'auto' : 'smooth' });
     else location.hash = id;
