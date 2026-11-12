@@ -33,7 +33,7 @@
 - `index.html`：頁面骨架
 - `styles.css`：全站樣式（色票、粗黑體、實色圓角按鈕、正方形拼磚、斷點 1100／1050／900／760）
 - `js/data.js`：**所有內容與設定集中在這裡**：SITE（聯絡、Google 表單、官方連結）、TOPICS、SERVICES、DIAGNOSTIC、SUPPORT、PRODUCT_CATEGORIES、PRODUCTS、PLANS、CASES、PROCESS、ARTICLES、FAQ、LEGAL、DEMO
-- `js/mosaic.js`：首頁拼磚（10／7／4 欄版型，`LAYOUTS`）
+- `js/mosaic.js`：首頁拼磚（8／7／4 欄版型，`LAYOUTS`）
 - `js/app.js`：首頁互動
 - `js/contact.js`：聯絡表單
 - `js/views.js`：`#client-demo`、`#admin-demo`、`#privacy`、`#terms`、`#disclaimer`
