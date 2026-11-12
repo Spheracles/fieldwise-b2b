@@ -1156,15 +1156,21 @@ window.DEMO = {
     for (let k = -h; k < w + h; k += step) d += `M${x0 + k} ${y0}l${h} ${h}M${x0 + k + h} ${y0}l${-h} ${h}`;
     return `<path d="${d}" stroke="${color}" stroke-width="4"/>`;
   };
+  /* 玉米：依參考圖，子彈形玉米穗、3 欄方格玉米粒、兩片大葉交疊成 V 字。
+   * 圖形畫在 100×264 的座標內，依圖塊高度等比縮放置中，不拉伸。 */
   const corn = (h) => {
-    const H = 100 * h, top = H * .08, cob = H * .7;
+    const H = 100 * h, k = Math.min(1, H / 264), ox = (100 - 100 * k) / 2, oy = (H - 264 * k) / 2;
+    const cob = 'M27 104C27 52 38 22 50 22C62 22 73 52 73 104V186Q73 204 50 204Q27 204 27 186Z';
     let kernels = '';
-    const rows = Math.floor((cob - 16) / 10.2);
-    for (let r = 0; r < rows; r++) for (let c = 0; c < 4; c++) kernels += `<rect x="${32.4 + c * 9}" y="${top + 9 + r * 10.2}" width="8" height="8.6" rx="2.6" fill="#fbe86a"/>`;
-    return `<svg viewBox="0 0 100 ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="${H}" fill="${D}"/><rect x="29" y="${top}" width="42" height="${cob}" rx="21" fill="${Y}"/>${kernels}` +
-      `<path d="M50 ${H - 4}C18 ${H * .86} 8 ${H * .6} 16 ${H * .4}C28 ${H * .54} 40 ${H * .7} 54 ${H * .84}Z" fill="${L}"/>` +
-      `<path d="M50 ${H - 4}C82 ${H * .86} 92 ${H * .6} 84 ${H * .4}C72 ${H * .54} 60 ${H * .7} 46 ${H * .84}Z" fill="${M}"/>` +
-      `<path d="M50 ${H - 4}C40 ${H * .9} 36 ${H * .78} 42 ${H * .64}C50 ${H * .74} 56 ${H * .86} 56 ${H - 4}Z" fill="${G}"/></svg>`;
+    for (let r = 0; r < 13; r++) for (let c = 0; c < 3; c++) kernels += `<rect x="${28.6 + c * 14.6}" y="${23 + r * 15.4}" width="13" height="13.6" rx="3" fill="#f5c62a"/>`;
+    return `<svg viewBox="0 0 100 ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="${H}" fill="${D}"/>` +
+      `<g transform="translate(${ox} ${oy}) scale(${k})"><clipPath id="corn-cob-${h}"><path d="${cob}"/></clipPath>` +
+      `<path d="${cob}" fill="#0a4a31"/><g clip-path="url(#corn-cob-${h})">${kernels}</g>` +
+      `<path d="M51 258Q12 204 8 98Q36 128 57 180Z" fill="#6cc24a"/>` +
+      `<path d="M51 258Q28 214 20 150Q40 166 55 196Z" fill="#5db642"/>` +
+      `<path d="M49 258Q88 204 92 98Q64 128 43 180Z" fill="#3f9f3e"/>` +
+      `<path d="M49 258Q72 214 80 150Q60 166 45 196Z" fill="#4aab43"/>` +
+      `</g></svg>`;
   };
   const FEATURES = {
     pineapple: { w: 1, h: 2, label: '鳳梨', svg: `<svg viewBox="0 0 100 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="100" height="200" fill="${C}"/><clipPath id="pine-body"><rect x="0" y="100" width="100" height="100"/></clipPath><rect x="0" y="100" width="100" height="100" fill="${Y}"/><g clip-path="url(#pine-body)">${lattice(0, 100, 100, 100, 20, '#ffffff')}</g>` +
