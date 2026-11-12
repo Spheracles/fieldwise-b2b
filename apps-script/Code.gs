@@ -69,7 +69,13 @@ function doPost(e) {
 
     lock.waitLock(10000);
     const sheet = getSheet();
-    sheet.appendRow(row);
+    // 先把整列設成純文字再寫入，電話、統一編號開頭的 0 才不會被吃掉
+    const r = sheet.getLastRow() + 1;
+    const range = sheet.getRange(r, 1, 1, COLUMNS.length);
+    range.setNumberFormat('@');
+    sheet.getRange(r, 1).setNumberFormat('yyyy-mm-dd hh:mm');
+    range.setValues([row]);
+    SpreadsheetApp.flush();
     lock.releaseLock();
 
     if (NOTIFY) notify(row);

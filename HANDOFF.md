@@ -22,7 +22,7 @@
 | 原始碼 | `site/`（純 HTML／CSS／JavaScript，無需安裝套件） |
 | 建置 | `node site/build.mjs` → 單一檔案 `docs/index.html`（約 0.9 MB，內嵌樣式、程式、10 張圖片）；`docs/media/` 放情境影片 |
 | GitHub | `Spheracles/fieldwise-b2b`（拆分時建立的新儲存庫；網址 https://spheracles.github.io/fieldwise-b2b/）；GitHub Pages 需在 Settings → Pages 設為 `main` / `/docs` |
-| 聯絡表單 | **暫停送出**（`SITE.googleForm.enabled = false`），只產生可複製摘要；需另建 B2B 專用 Google 表單 |
+| 聯絡表單 | **已上線**：先選身分再分流（通路採購／農友／其他），送到 Google Apps Script（`apps-script/Code.gs`），寫入試算表「田序共創 B2B 預約初談」的「預約初談」工作表並寄 Email 通知；網站收到寫入成功才顯示已送出 |
 | 聯絡方式 | 測試模式（`test@example.com`、`09XX-XXX-XXX`、「LINE 測試帳號」並標示「測試資料」） |
 | 內容方向 | 仍是第四版的「小農＋支持小農的民眾＋企業合作」混合定位，**尚未針對中盤商 B2B 改寫**（見第 5 節） |
 
@@ -87,3 +87,4 @@
 - 2026-11-11：依交接包完成第四版改版（新首頁拼磚、商品專區、新表單），曾發佈在 `fieldwise-web`。
 - 2026-11-12：拆分。`fieldwise-web` 恢復為改版前的 React 政府提案版；第四版搬到 `fieldwise-b2b`，表單暫停送出。
 - 2026-11-12：首頁依參考圖改為 8 欄拼磚構圖；「看看陪跑會怎麼進行」併入「從聊聊到一起行動」；刪除兩個工作台卡片與「把不同的力量帶到產地」；儲存庫名稱改正為 `fieldwise-b2b`。
+- 2026-11-12：預約初談改為 B2B 題目與身分分流。Google 表單（B2B 中盤商版）會靜默丟棄網站直接送出的回覆，改用 Apps Script 接收；部署為網頁應用程式（執行身分：擁有者、存取：所有人），網址寫在 `SITE.inquiry.endpoint`。修改程式後用「管理部署作業 → 編輯 → 新版本」，網址不變。
